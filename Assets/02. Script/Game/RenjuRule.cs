@@ -5,7 +5,7 @@
 /// </summary>
 namespace Gomoku
 {
-    public class RenjuRule
+    public static class RenjuRule
     {
         private const int BOARD_SIZE = 15;
 
@@ -57,6 +57,21 @@ namespace Gomoku
             }
             return false;
         }
+        
+        private static int CountStonesInDirection(int[,] board, int row, int col, int dRow, int dCol, int player)
+        {
+            int count = 0;
+            int r = row + dRow;
+            int c = col + dCol;
+            while (IsValidPosition(r, c) && board[r, c] == player)
+            {
+                count++;
+                r += dRow;
+                c += dCol;
+            }
+            return count;
+        }
+
 
         /// <summary>
         /// 3-3 또는 4-4인지 검사
@@ -72,8 +87,8 @@ namespace Gomoku
                 int dx = directions[i, 0];
                 int dy = directions[i, 1];
 
-                // B를 중심으로 양쪽 5칸씩, 총 11칸의 라인을 문자열로 만듭니다.
-                // 이는 '열린 4' (예: _XXXX_)를 포함한 모든 패턴을 감지하기에 충분한 길이입니다.
+                // B를 중심으로 양쪽 5칸씩, 총 11칸의 라인을 문자열로 만들고
+                // 문자열 비교를 통해 금지된 패턴을 찾음
                 var lineBuilder = new System.Text.StringBuilder();
                 for (int k = 5; k >= 1; k--)
                 {
@@ -102,7 +117,8 @@ namespace Gomoku
                 }
 
                 // 열린 4 검사 (B가 놓아져서 완성되는 경우)
-                if (tempLine.Contains("_XXXX_") || tempLine.Contains("_X_XXX_") || tempLine.Contains("_XX_XX_") || tempLine.Contains("_XXX_X_"))
+                if (tempLine.Contains("_XXXX_") || tempLine.Contains("_X_XXX_") || tempLine.Contains("_XX_XX_") || tempLine.Contains("_XXX_X_") ||
+                tempLine.Contains("OXXXX_") || tempLine.Contains("OX_XXX_") || tempLine.Contains("OXX_XX_") || tempLine.Contains("OXXX_X_"))
                 {
                     openFourCount++;
                 }

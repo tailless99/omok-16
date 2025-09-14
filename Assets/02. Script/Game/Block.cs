@@ -7,6 +7,7 @@ public class Block : MonoBehaviour
 {
     [SerializeField] private Sprite blackMarkerSprite;
     [SerializeField] private Sprite whiteMarkerSprite;
+    [SerializeField] private Sprite forbiddenMarkerSprite;
     [SerializeField] private Image markerSpriteRenderer;
 
     public delegate void OnBlockClicked(int index);
@@ -14,7 +15,13 @@ public class Block : MonoBehaviour
 
 
     // 마커 타입
-    public enum MarkerType { None, blackMarker, whiteMarker }
+    public enum MarkerType
+    {
+        None,
+        blackMarker,
+        whiteMarker,
+        forbiddenMarker
+    }
 
     // Block Index
     private int _blockIndex;
@@ -51,6 +58,10 @@ public class Block : MonoBehaviour
                 break;
             case MarkerType.whiteMarker:
                 markerSpriteRenderer.sprite = whiteMarkerSprite;
+                markerSpriteRenderer.color = new Color(1, 1, 1, 1);
+                break;
+            case MarkerType.forbiddenMarker:
+                markerSpriteRenderer.sprite = forbiddenMarkerSprite;
                 markerSpriteRenderer.color = new Color(1, 1, 1, 1);
                 break;
         }

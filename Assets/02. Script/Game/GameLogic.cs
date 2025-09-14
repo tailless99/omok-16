@@ -1,4 +1,5 @@
 using System;
+using Gomoku;
 using UnityEngine;
 
 public class GameLogic
@@ -59,9 +60,14 @@ public class GameLogic
     public bool SetNewBoardValue(Constants.PlayerType playerType, int row, int col) {
         if (_board[row, col] != Constants.PlayerType.None) return false;
         
-        if (playerType == Constants.PlayerType.PlayerA) {
-            _board[row, col] = playerType;
-            BlockController.PlaceMarker(Block.MarkerType.blackMarker, row, col);
+        if (playerType == Constants.PlayerType.PlayerA)
+        {
+            var intBoard = GetIntBoard();
+            if (RenjuRule.IsForbiddenMove(intBoard, row, col, 1) == false)
+            {
+                _board[row, col] = playerType;
+                BlockController.PlaceMarker(Block.MarkerType.blackMarker, row, col);
+            }
             return true;
         }
         else if(playerType == Constants.PlayerType.PlayerB) {
@@ -72,6 +78,32 @@ public class GameLogic
 
         return false;
     }
+    // 보드의 정보를 IsForbiddenMove에 쓰기위해 타입을 변환하여 가져옴
+    
+    private int[,] GetIntBoard()
+    {
+        var intBoard = new int[Constants.BlockColumnCount, Constants.BlockColumnCount];
+        for (int r = 0; r < Constants.BlockColumnCount; r++)
+        {
+            for (int c = 0; c < Constants.BlockColumnCount; c++)
+            {
+                switch (_board[r, c])
+                {
+                    case Constants.PlayerType.PlayerA: // 흑돌
+                        intBoard[r, c] = 1;
+                        break;
+                    case Constants.PlayerType.PlayerB: // 백돌
+                        intBoard[r, c] = 2;
+                        break;
+                    default:
+                        intBoard[r, c] = 0;
+                        break;
+                }
+            }
+        }
+        return intBoard;
+    }
+
 
     // Game Over 처리
     public void EndGame(GameResult gameResult) {
