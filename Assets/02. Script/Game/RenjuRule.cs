@@ -8,7 +8,6 @@ namespace Gomoku
     public class RenjuRule
     {
         private const int BOARD_SIZE = 15;
-        private const int[,] board = new int[BOARD_SIZE, BOARD_SIZE];
 
         private static readonly int[,] directions =
         {
@@ -16,160 +15,147 @@ namespace Gomoku
             { -1, 0 },  // 1: ↑ (세로)
             { -1, 1 },  // 2: ↗ (대각선)  
             { 0, -1 },  // 3: ← (가로)
-            { 0, 1 },   // 4: → (가로)
-            { 1, -1 },  // 5: ↙ (대각선)
-            { 1, 0 },   // 6: ↓ (세로)
-            { 1, 1 }    // 7: ↘ (대각선)
+            // 아래 4개는 위 방향들의 정반대 방향
+            { 1, 1 },   // 4: ↘ (대각선)
+            { 1, 0 },   // 5: ↓ (세로)
+            { 1, -1 },  // 6: ↙ (대각선)
+            { 0, 1 }    // 7: → (가로)
         };
+
         /// <summary>
-        /// 렌주룰 적용 받는지
-        /// 돌 번호 == 0: None, 1: Black, 2: White
+        /// 흑돌의 금수(3-3, 4-4, 장목)인지 검사
+        /// player: 0: None, 1: Black, 2: White
         /// </summary>
-        public static bool ImpossibleMove(board board, int row, int col)
+        public static bool IsForbiddenMove(int[,] board, int row, int col, int player)
         {
-            if (playerType != 1) return false; // 흑돌만 적용
+            if (player != 1) return false; // 흑돌만 렌주룰 적용
 
-            var dir = directions;
+            // 임시로 돌을 놓아서 금수인지 체크
+            board[row, col] = player;
 
-            // 임시로 돌을 놓아서 체크
-            board[row, col] = 1;
+            bool isForbidden = Is33Or44(board, row, col, player) || 
+							   IsOverline(board, row, col, player);
 
-            bool result = false;
-
-            // 임시 돌 제거
+            // 임시로 놓았던 돌 제거
             board[row, col] = 0;
 
-            return result;
+            return isForbidden;
         }
-        
-        // 우선 돌을 놓을 수 있는 곳인지 확인
+
+        /// <summary>
+        /// 6목 이상(장목)인지 검사
+        /// </summary>
+        private static bool IsOverline(int[,] board, int row, int col, int player)
+        {
+            for (int i = 0; i < 4; i++) // 4가지 방향 축(가로, 세로, 대각선 2개)만 검사
+            {
+                int count = 1;
+                count += CountStonesInDirection(board, row, col, directions[i, 0], directions[i, 1], player);
+                count += CountStonesInDirection(board, row, col, directions[i + 4, 0], directions[i + 4, 1], player);
+
+                if (count > 5) return true;
+            }
+            return false;
+        }
+
+        /// <summary>
+        /// 3-3 또는 4-4인지 검사
+        /// 연속된 돌에 대한 '열린 3'과 '열린 4'를 검사하며,
+        /// </summary>
+        private static bool Is33Or44(int[,] board, int row, int col, int player)
+        {
+            int openThreeCount = 0;
+            int openFourCount = 0;
+
+            for (int i = 0; i < 4; i++) // 4가지 방향 축
+            {
+                int dx = directions[i, 0];
+                int dy = directions[i, 1];
+
+                // B를 중심으로 양쪽 5칸씩, 총 11칸의 라인을 문자열로 만듭니다.
+                // 이는 '열린 4' (예: _XXXX_)를 포함한 모든 패턴을 감지하기에 충분한 길이입니다.
+                var lineBuilder = new System.Text.StringBuilder();
+                for (int k = 5; k >= 1; k--)
+                {
+                    int r = row - k * dx;
+                    int c = col - k * dy;
+                    AppendBoardState(lineBuilder, board, r, c, player);
+                }
+
+                lineBuilder.Append('B'); // 현재 놓는 돌
+
+                for (int k = 1; k <= 5; k++)
+                {
+                    int r = row + k * dx;
+                    int c = col + k * dy;
+                    AppendBoardState(lineBuilder, board, r, c, player);
+                }
+
+                string line = lineBuilder.ToString();
+                string tempLine = line.Replace('B', 'X'); // B를 X로 취급하여 패턴 검사
+
+                // 열린 3 검사 (B가 놓아져서 완성되는 경우)
+                // 1. 열린 연속된 3, 2. 중간이 비어있는 열린 3
+                if (tempLine.Contains("_XXX_") || tempLine.Contains("_X_XX_") || tempLine.Contains("_XX_X_"))
+                {
+                    openThreeCount++;
+                }
+
+                // 열린 4 검사 (B가 놓아져서 완성되는 경우)
+                if (tempLine.Contains("_XXXX_") || tempLine.Contains("_X_XXX_") || tempLine.Contains("_XX_XX_") || tempLine.Contains("_XXX_X_"))
+                {
+                    openFourCount++;
+                }
+
+                if (tempLine.Contains("XXXXXX_") || tempLine.Contains("XX_XX_XX"))
+                {
+                    openFourCount = 2;
+                }
+            }
+
+            return openThreeCount >= 2 || openFourCount >= 2;
+
+        }
+
+        // 돌을 놓을 수 있는 유효한 위치인지 확인
         private static bool IsValidPosition(int x, int y)
         {
             return x >= 0 && x < BOARD_SIZE && y >= 0 && y < BOARD_SIZE;
         }
         
-        // 한 방향으로 연속된 돌 개수 세기
-        private static int CountStonesInDirection(board[,] board, int row, int col, int dx, int dy)
+        // 라인 문자열을 만들기 위한 헬퍼 메서드
+        private static void AppendBoardState(System.Text.StringBuilder builder, int[,] board, int r, int c, int player)
         {
-            int count = 0;
-            int x = row + dx;
-            int y = col + dy;
-    
-            while (IsValidPosition(x, y) && board[x, y] == 1)
+            if (!IsValidPosition(r, c))
             {
-                count++;
-                x += dx;
-                y += dy;
+                builder.Append('W'); // Wall (보드 밖)
             }
-    
-            return count;
-        }
-        
-        // 1. IsCloseThree를 통해 인접한 3의 개수를 구함
-        public static bool Close33or44(board[,] board, int row, int col, int dir)
-        {
-            int threeCount = 0;
-            int fourCount = 0;
-
-            for (int i = 0; i < 4; i++)
+            else if (board[r, c] == 0)
             {
-                int stones = 1; // 놓을 돌 포함
-                
-                // dir1
-                int dx1 = directions[i, 0];
-                int dy1 = directions[i, 1];
-                // dir2 = 방향을 대칭으로 하기 위해 7 - i
-                int dx2 = directions[7 - i, 0];
-                int dy2 = directions[7 - i, 1];
-                
-                // dir1 체크
-                int x = row + dx1;
-                int y = col + dy1;
-                //x, y의 좌표가 유효한 좌표인지 확인 && 값이 1(Black)인지 확인
-                while (IsValidPosition(x, y) && board[x, y] == 1)
-                {
-                    // 맞다면 stone의 개수++ && 같은 방향으로 반복문
-                    stones++;
-                    x += dx1;
-                    y += dy1;
-                }
-                
-                // dir2
-                x = row + dx2;
-                y = col + dy2;
-                while (IsValidPosition(x, y) && board[x, y] == 1)
-                {
-                    stones++;
-                    x += dx1;
-                    y += dy1;
-                }
-                if (stones >= 3)
-                {
-                    // 양 끝이 비어있는 지 체크
-                    int frontX = row + dx1 * 2;
-                    int frontY = col + dy1 * 2;
-                    int backX = row + dx2 * 2;
-                    int backY = col + dy2 * 2;
-                
-                    if (IsValidPosition(frontX, frontY) && board[frontX, frontY] == 0 &&
-                        IsValidPosition(backX, backY) && board[backX, backY] == 0)
-                    {
-                        //비어 있다면
-                        if (stones == 3) threeCount++;
-                        if (stones == 4) fourCount++;
-                    }
-                }
-                
-                // 임시
-                // if (stones == 3)
-                // {
-                //     // 양 끝이 비어있는 지 체크
-                //     int frontX = row + dx1 * 2;
-                //     int frontY = col + dy1 * 2;
-                //     int backX = row + dx2 * 2;
-                //     int backY = col + dy2 * 2;
-                //
-                //     if (IsValidPosition(frontX, frontY) && board[frontX, frontY] == 0 &&
-                //         IsValidPosition(backX, backY) && board[backX, backY] == 0)
-                //     {
-                //         //비어 있다면
-                //         threeCount++;
-                //     }
-                // }
-                //
-                // if (stones == 4)
-                // {
-                //     // 양 끝이 비어있는 지 체크
-                //     int frontX = row + dx1 * 2;
-                //     int frontY = col + dy1 * 2;
-                //     int backX = row + dx2 * 2;
-                //     int backY = col + dy2 * 2;
-                //
-                //     if (IsValidPosition(frontX, frontY) && board[frontX, frontY] == 0 &&
-                //         IsValidPosition(backX, backY) && board[backX, backY] == 0)
-                //     {
-                //         //비어 있다면
-                //         fourCount++;
-                //     }
-                // }
+                builder.Append('_'); // Empty
             }
-
-            if (threeCount == 2 || fourCount == 2)
-                return true;
-
-            return false;
+            else if (board[r, c] == player)
+            {
+                builder.Append('X'); // Player's stone
+            }
+            else
+            {
+                builder.Append('O'); // Opponent's stone
+            }
         }
+
+
         // 2. 인접해 있지 않은 특정 3-3 패턴
-        // 2-1 흑돌을 놓았을 때 앞 O 뒤 OXXO -> OBOXXO && 반대로 (1, 2)
-        // 2-2 흑돌을 놓았을 때 앞 OX 뒤 OXO -> OXBOXO && 반대로 (2, 1)
+        // 2-1 흑돌을 놓았을 때 앞 _ 뒤 _XX_ -> _B_XX_ && 반대로 (1, 2)
+        // 2-2 흑돌을 놓았을 때 앞 _X 뒤 _X_ -> _XB_X_ && 반대로 (2, 1)
         
         // 3. 인접해 있지 않은 특정 4-4 패턴
-        // 3-1 흑돌을 놓았을 때 앞 ? 뒤 OXXX? -> ?BOXXX? && 반대로 (1, 3)
-        // 3-2 흑돌을 놓았을 때 앞 ?X 뒤 OXX? -> ?XBOXX? && 반대로 (2, 2)
-        // 3-3 흑돌을 놓았을 때 앞 ?XX 뒤 OX? -> ?XBOXX? && 반대로 (3, 1)
+        // 3-1 흑돌을 놓았을 때 앞 ? 뒤 _XXX? -> ?B_XXX? && 반대로 (1, 3)
+        // 3-2 흑돌을 놓았을 때 앞 ?X 뒤 _XX? -> ?XB_XX? && 반대로 (2, 2)
+        // 3-3 흑돌을 놓았을 때 앞 ?XX 뒤 _X? -> ?XB_XX? && 반대로 (3, 1)
         
         // 4. 굉장히 특수한 패턴
-        // 4-1 XXBXXXO
-        // 4-2 XXOBXOXX
+        // 4-1 XXBXXX_
+        // 4-2 XX_BX_XX
     }
 }
