@@ -7,7 +7,7 @@ public class AIState : BasePlayerState {
         GameManager.Instance.SetGameTurnPanel(GameUIController.GameTurnPanelType.BTurn);
 
         var board = gameLogic.GetBoard();
-        var result = TicTacToeAI.GetBestMove(board);
+        var result = OmokAI.GetBestMove(board);
         if (result.HasValue) {
             HandleMove(gameLogic, result.Value.row, result.Value.col);
         }
