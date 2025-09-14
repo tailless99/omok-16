@@ -43,12 +43,14 @@
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "RunOnceActivity.git.unshallow": "true",
     "git-widget-placeholder": "RenjuRule",
+    "ignore.virus.scanning.warn.message": "true",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
     "node.js.selected.package.tslint": "(autodetect)",
     "nodejs_package_manager_path": "npm",
     "settings.editor.selected.configurable": "advanced.settings",
+    "settings.editor.selected.configurable": "File.Encoding",
     "vue.rearranger.settings.migration": "true"
   }
 }]]></component>
@@ -122,6 +124,7 @@
       <workItem from="1757477779766" duration="6267000" />
       <workItem from="1757485830750" duration="7925000" />
       <workItem from="1757827492107" duration="2072000" />
+      <workItem from="1757824389599" duration="513000" />
     </task>
     <servers />
   </component>
