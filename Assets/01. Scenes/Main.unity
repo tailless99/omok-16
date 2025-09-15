@@ -2113,6 +2113,7 @@ MonoBehaviour:
   confirmPanel: {fileID: 1811821152304400205, guid: 81c0faa7b06b25541b91f251b1b6fde3, type: 3}
   signInPanel: {fileID: 0}
   registerPanel: {fileID: 0}
+  rematchPanel: {fileID: 1811821152304400205, guid: e3673b3f01cf7f5449f0f0e553ec850a, type: 3}
 --- !u!4 &1293430830
 Transform:
   m_ObjectHideFlags: 0

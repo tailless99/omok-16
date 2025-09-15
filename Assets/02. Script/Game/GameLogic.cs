@@ -1,6 +1,7 @@
 using System;
 using Gomoku;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class GameLogic
 {
@@ -12,17 +13,28 @@ public class GameLogic
     public BasePlayerState secondPlayerState;   // Player B
     public BasePlayerState _currentPlayerState; // 현재 턴의 Player
 
+    private Constants.GameType _gameType;
+    private Constants.GameType GameType => _gameType;
+
 
     public enum GameResult { None, PlayerAWin, PlayerBWin, Draw }
 
 
     public GameLogic(BlockController blockController, Constants.GameType gameType) {
         BlockController = blockController;
+        _gameType = gameType;
 
         // 보드의 상태 정보 초기화
         _board = new Constants.PlayerType[Constants.BlockColumnCount, Constants.BlockColumnCount];
-        // Game Type 초기화
-        switch (gameType) {
+
+        StartGame();
+    }
+    
+    private void StartGame()
+    {
+        BoardReset();
+        switch (_gameType)
+        {
             case Constants.GameType.SinglePlay:
                 firstPlayerState = new PlayerState(true);
                 GameManager.Instance.SetPlayerRateTierPanel(GameUIController.GameTurnPanelType.ATurn, firstPlayerState.rateTier, firstPlayerState.currentEXP);
@@ -37,10 +49,11 @@ public class GameLogic
             case Constants.GameType.MultiPlay:
                 break;
         }
-        
+
         // 게임 시작
         SetState(firstPlayerState);
     }
+
 
     // 외부에서 보드를 가져올 수 있도록 반환
     public Constants.PlayerType[,] GetBoard() {
@@ -79,7 +92,6 @@ public class GameLogic
         return false;
     }
     // 보드의 정보를 IsForbiddenMove에 쓰기위해 타입을 변환하여 가져옴
-    
     private int[,] GetIntBoard()
     {
         var intBoard = new int[Constants.BlockColumnCount, Constants.BlockColumnCount];
@@ -104,7 +116,18 @@ public class GameLogic
         return intBoard;
     }
 
-
+    public void BoardReset()
+    {
+        for (int r = 0; r < Constants.BlockColumnCount; r++)
+        {
+            for (int c = 0; c < Constants.BlockColumnCount; c++)
+            {
+                _board[r, c] = Constants.PlayerType.None;
+                BlockController.PlaceMarker(Block.MarkerType.None, r, c);
+            }
+        }
+    }
+    
     // Game Over 처리
     public void EndGame(GameResult gameResult) {
         SetState(null);
@@ -113,7 +136,10 @@ public class GameLogic
 
         // 유저에게 Game Over 표시
         GameManager.Instance.OpenConfirmPanel("게임 오버", () => {
-            GameManager.Instance.ChangeToMainScene();
+            GameManager.Instance.OpenRematchPanel("재도전 하시겠습니까?", () =>
+            {
+                StartGame();
+            });
         });
     }
 
