@@ -119,9 +119,9 @@ public class GameLogic
 
     // 게임의 결과 확인
     public GameResult CheckGameResult() {
-        if(TicTacToeAI.CheckGameWin(Constants.PlayerType.PlayerA, _board)) return GameResult.PlayerAWin; // 플레이어 A 승리 체크
-        if(TicTacToeAI.CheckGameWin(Constants.PlayerType.PlayerB, _board)) return GameResult.PlayerBWin; // 플레이어 B 승리 체크
-        if(TicTacToeAI.CheckGameDraw(_board)) return GameResult.Draw; // 비겼는지 확인
+        if(OmokAI.CheckGameWin(Constants.PlayerType.PlayerA, _board)) return GameResult.PlayerAWin; // 플레이어 A 승리 체크
+        if(OmokAI.CheckGameWin(Constants.PlayerType.PlayerB, _board)) return GameResult.PlayerBWin; // 플레이어 B 승리 체크
+        if(OmokAI.CheckGameDraw(_board)) return GameResult.Draw; // 비겼는지 확인
 
         // 다 아니라면, 아직 승부중이므로 None 상태 반환
         return GameResult.None;
