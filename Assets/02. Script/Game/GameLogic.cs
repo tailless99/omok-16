@@ -72,6 +72,7 @@ public class GameLogic
 
     // Game Over 처리
     public void EndGame(GameResult gameResult) {
+
         SetState(null);
         firstPlayerState = null;
         secondPlayerState = null;
@@ -84,8 +85,16 @@ public class GameLogic
 
     // 게임의 결과 확인
     public GameResult CheckGameResult() {
-        if(TicTacToeAI.CheckGameWin(Constants.PlayerType.PlayerA, _board)) return GameResult.Win; // 플레이어 A 승리 체크
-        if(TicTacToeAI.CheckGameWin(Constants.PlayerType.PlayerB, _board)) return GameResult.Lose; // 플레이어 B 승리 체크
+        if (TicTacToeAI.CheckGameWin(Constants.PlayerType.PlayerA, _board))
+        {
+            Level.AddScoreSave(); //플레이어 A 급수 스코어 증가 저장
+            return GameResult.Win; // 플레이어 A 승리 체크
+        }
+        if (TicTacToeAI.CheckGameWin(Constants.PlayerType.PlayerB, _board))
+        {
+            Level.RemoveSaveScore(); //플레이어 A 급수 스코어 감소 저장
+            return GameResult.Lose; // 플레이어 B 승리 체크
+        }
         if(TicTacToeAI.CheckGameDraw(_board)) return GameResult.Draw; // 비겼는지 확인
 
         // 다 아니라면, 아직 승부중이므로 None 상태 반환
