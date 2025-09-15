@@ -67,8 +67,8 @@ public class GameLogic
             {
                 _board[row, col] = playerType;
                 BlockController.PlaceMarker(Block.MarkerType.blackMarker, row, col);
+                return true;
             }
-            return true;
         }
         else if(playerType == Constants.PlayerType.PlayerB) {
             _board[row, col] = playerType;
