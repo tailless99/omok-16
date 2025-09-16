@@ -7,11 +7,15 @@ public class GameManager : Singleton<GameManager> {
     [SerializeField] private GameObject confirmPanel;   // 확인창 패널
     [SerializeField] private GameObject signInPanel;    // 로그인 패널
     [SerializeField] private GameObject registerPanel;  // 회원가입 패널
+    [SerializeField] private GameObject rematchPanel;
 
     // 급수 저장 임시 변수
     // 멀티 모드 생성 후, 서버로 데이터 저장
     private int rateTier = 18;  // 최하급 티어
     private int tierEXP = 0;    // 경험치
+    public int haveGold = 0;   // 소지금
+    public bool isExpIncreaseActive = false; // 경험치 추가 증가 활성화 여부
+    public bool isExpDecreaseActive = false; // 경험치 감소 활성화 여부
 
     private Constants.GameType _gameType;
 
@@ -34,9 +38,10 @@ public class GameManager : Singleton<GameManager> {
     /// </summary>
     /// <param name="rateTier"></param>
     /// <param name="tierEXP"></param>
-    public void SetTierInfo(int rateTier, int tierEXP) { 
+    public void SetTierInfo(int rateTier, int tierEXP, int gold) { 
         this.rateTier = rateTier;
         this.tierEXP = tierEXP;
+        this.haveGold += gold;
     }
 
     /// <summary>
@@ -70,8 +75,19 @@ public class GameManager : Singleton<GameManager> {
     /// <param name="message"></param>
     public void OpenConfirmPanel(string message, ConfirmPanelController.OnConfirmButtonClicked onConfirmButtonClicked) {
         if (_canvas != null) {
-            var confirPanelObject = Instantiate(confirmPanel, _canvas.transform);
-            confirPanelObject.GetComponent<ConfirmPanelController>().Show(message, onConfirmButtonClicked);
+            var confirmPanelObject = Instantiate(confirmPanel, _canvas.transform);
+            confirmPanelObject.GetComponent<ConfirmPanelController>().Show(message, onConfirmButtonClicked);
+        }
+    }
+    /// <summary>
+    /// RematchPanel을 여는 메서드
+    /// </summary>
+    public void OpenRematchPanel(string message, RematchPanelController.OnRematchButtonClicked onRematchButtonClicked)
+    {
+        if (_canvas != null)
+        {
+            var rematchPanelObject = Instantiate(rematchPanel, _canvas.transform);
+            rematchPanelObject.GetComponent<RematchPanelController>().Show(message, onRematchButtonClicked);
         }
     }
 

@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
+using UnityEngine;
 /// <summary>
 /// 렌주룰 구현
 /// 작업자 : 이승윤
@@ -41,6 +42,44 @@ namespace Gomoku
 
             return isForbidden;
         }
+
+        public static List<(int row, int col)> FindAllForbiddenMoves(int[,] board, int player)
+        {
+            var forbiddenMoves = new List<(int row, int col)>();
+            
+            for (int r = 0; r < BOARD_SIZE; r++)
+            {
+                for (int c = 0; c < BOARD_SIZE; c++)
+                {
+                    if (board[r, c] != 0) continue;
+                    
+                    if (IsForbiddenMove(board, r, c, player))
+                    {
+                        forbiddenMoves.Add((r, c));
+                    }
+                }
+            }
+
+            return forbiddenMoves;
+        }
+        
+        // 금수 위치를 표시할 보드 업데이트
+        public static void UpdateForbiddenMarkers(int[,] board, int player, bool[,] forbiddenMarkersBoard)
+        {
+            // 1. 기존의 금수 마크를 모두 초기화합니다.
+            System.Array.Clear(forbiddenMarkersBoard, 0, forbiddenMarkersBoard.Length);
+
+            if (player != 1) return;
+            // 2. 모든 금수 위치를 찾습니다.
+            List<(int row, int col)> forbiddenMoves = FindAllForbiddenMoves(board, player);
+
+            // 3. 찾은 위치를 forbiddenMarkersBoard에 true로 표시합니다.
+            foreach (var move in forbiddenMoves)
+            {
+                forbiddenMarkersBoard[move.row, move.col] = true;
+            }
+        }
+
 
         /// <summary>
         /// 6목 이상(장목)인지 검사
@@ -113,14 +152,30 @@ namespace Gomoku
                 // 1. 열린 연속된 3, 2. 중간이 비어있는 열린 3
                 if (tempLine.Contains("_XXX_") || tempLine.Contains("_X_XX_") || tempLine.Contains("_XX_X_"))
                 {
+                    if (tempLine.Contains("_X_XXX_") || tempLine.Contains("_XXX_X_") ||
+                        tempLine.Contains("W_XXX_") || tempLine.Contains("_XXX_W"))
+                        continue;
+                    
                     openThreeCount++;
+                    
+                    Debug.Log($"openThreeCount : {openThreeCount}");
                 }
 
                 // 열린 4 검사 (B가 놓아져서 완성되는 경우)
                 if (tempLine.Contains("_XXXX_") || tempLine.Contains("_X_XXX_") || tempLine.Contains("_XX_XX_") || tempLine.Contains("_XXX_X_") ||
-                tempLine.Contains("OXXXX_") || tempLine.Contains("OX_XXX_") || tempLine.Contains("OXX_XX_") || tempLine.Contains("OXXX_X_"))
+                    // 한쪽이 상대 돌 'O' 또는 벽 'W'로 막힌 4의 모든 경우 추가
+                    tempLine.Contains("_XXXXO") || tempLine.Contains("OXXXX_") ||
+                    tempLine.Contains("OX_XXX_") || tempLine.Contains("_XXX_XO") ||
+                    tempLine.Contains("OXX_XX_") || tempLine.Contains("_XX_XXO") ||
+                    tempLine.Contains("OXXX_X_") || tempLine.Contains("_X_XXXO") ||
+                    tempLine.Contains("_XXXXW") || tempLine.Contains("WXXXX_") ||
+                    tempLine.Contains("_X_XXXW") || tempLine.Contains("WX_XXX_") ||
+                    tempLine.Contains("_XX_XXW") || tempLine.Contains("WXX_XX_") ||
+                    tempLine.Contains("_XXX_XW") || tempLine.Contains("WXXX_X_")
+                   )
                 {
                     openFourCount++;
+                    Debug.Log($"openFourCount : {openFourCount}");
                 }
 
                 if (tempLine.Contains("XXXXXX_") || tempLine.Contains("XX_XX_XX"))
