@@ -66,12 +66,15 @@ public class PlayerState : BasePlayerState {
             }
         }
 
-        // Player B의 경우
-        if (_playerType == Constants.PlayerType.PlayerB) {
-            if (gameResult == GameLogic.GameResult.PlayerAWin) {
+        //Player B의 경우
+        if (_playerType == Constants.PlayerType.PlayerB)
+        {
+            if (gameResult == GameLogic.GameResult.PlayerAWin)
+            {
                 currentEXP -= 1; // 경험치 1 감소
             }
-            else if (gameResult == GameLogic.GameResult.PlayerBWin) {
+            else if (gameResult == GameLogic.GameResult.PlayerBWin)
+            {
                 currentEXP += 1; // 경험치 1 증가
             }
         }

@@ -111,6 +111,12 @@ public class GameLogic
         firstPlayerState = null;
         secondPlayerState = null;
 
+        var streak = GameObject.FindAnyObjectByType<WinningStreak>();
+        if (streak != null)
+        {
+            streak.WinningCount(gameResult);
+        }
+
         // 유저에게 Game Over 표시
         GameManager.Instance.OpenConfirmPanel("게임 오버", () => {
             GameManager.Instance.ChangeToMainScene();
