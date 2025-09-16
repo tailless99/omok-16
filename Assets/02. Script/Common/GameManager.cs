@@ -1,3 +1,4 @@
+using System.Runtime.InteropServices.WindowsRuntime;
 using UnityEditor.Rendering;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -13,6 +14,9 @@ public class GameManager : Singleton<GameManager> {
     private int tierEXP = 0;    // 경험치
 
     private Constants.GameType _gameType;
+
+    private int winningStreak = 0; //연승 저장 변수
+    private int bestCount = 0; // 최대 연승 저장
 
     // Panel을 띄우기 위한 Canvas 할당
     private Canvas _canvas;
@@ -114,4 +118,42 @@ public class GameManager : Singleton<GameManager> {
     private void OnApplicationQuit() {
         _gameLogic = null;
     }
+
+
+
+    //작성자: 이명호
+    /// <summary>
+    /// 연승횟수, 최다연승 횟수 가져오는 함수
+    /// </summary>
+    /// <param name="winningStreak"></param>
+    /// <param name="bestCount"></param>
+   public void GetWinningStreak(out int winningStreak, out int bestCount)
+    {
+        winningStreak = this.winningStreak;
+        bestCount = this.bestCount;
+    }
+
+
+    //작성자: 이명호
+    /// <summary>
+    /// 연승횟수, 최다연승 정보 저장 함수
+    /// </summary>
+    /// <param name="winningStreak"></param>
+    /// <param name="bestCount"></param>
+    public void SetWinningStreak(int winningStreak, int bestCount)
+    {
+        this.winningStreak = winningStreak;
+        this.bestCount = bestCount;
+    }
+
+    //작성자: 이명호
+    /// <summary>
+    /// 현재 게임타입 가져오는 함수
+    /// </summary>
+    /// <param name="_gameType"></param>
+    public void GetGameType(out Constants.GameType _gameType)
+    {
+        _gameType = this._gameType;
+    }
+
 }
