@@ -74,7 +74,6 @@ public class Block : MonoBehaviour
 
     // 4. 블럭 터치
     public void OnMouseClick() {
-        Debug.Log($"Selected Block : {_blockIndex}");
         _onBlockClicked?.Invoke(_blockIndex);
     }
 }

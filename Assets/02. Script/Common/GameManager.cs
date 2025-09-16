@@ -12,6 +12,9 @@ public class GameManager : Singleton<GameManager> {
     // 멀티 모드 생성 후, 서버로 데이터 저장
     private int rateTier = 18;  // 최하급 티어
     private int tierEXP = 0;    // 경험치
+    public int haveGold = 0;   // 소지금
+    public bool isExpIncreaseActive = false; // 경험치 추가 증가 활성화 여부
+    public bool isExpDecreaseActive = false; // 경험치 감소 활성화 여부
 
     private Constants.GameType _gameType;
 
@@ -31,9 +34,10 @@ public class GameManager : Singleton<GameManager> {
     /// </summary>
     /// <param name="rateTier"></param>
     /// <param name="tierEXP"></param>
-    public void SetTierInfo(int rateTier, int tierEXP) { 
+    public void SetTierInfo(int rateTier, int tierEXP, int gold) { 
         this.rateTier = rateTier;
         this.tierEXP = tierEXP;
+        this.haveGold += gold;
     }
 
     /// <summary>
