@@ -8,6 +8,7 @@ public class GameLogic
     public BlockController BlockController;     // Block을 처리할 객체
 
     private Constants.PlayerType[,] _board;     // 보드의 상태 정보
+    private bool[,] _forbiddenMarkersBoard = new bool[15, 15]; // 금지마크 설정을 위한 보드
 
     public BasePlayerState firstPlayerState;    // Player A
     public BasePlayerState secondPlayerState;   // Player B
@@ -26,6 +27,7 @@ public class GameLogic
 
         // 보드의 상태 정보 초기화
         _board = new Constants.PlayerType[Constants.BlockColumnCount, Constants.BlockColumnCount];
+        _forbiddenMarkersBoard = new bool[Constants.BlockColumnCount, Constants.BlockColumnCount];
 
         StartGame();
     }
@@ -59,6 +61,13 @@ public class GameLogic
     public Constants.PlayerType[,] GetBoard() {
         return _board;
     }
+    
+    // 외부에서 금수 보드를 가져올 수 있도록 반환
+    public bool[,] GetForbiddenMarkersBoard()
+    {
+        return _forbiddenMarkersBoard;
+    }
+
 
     // 턴이 바뀔 때, 기존 진행하던 상태를 Exit하고
     // 이번 턴의 상태를 _currentPlayerState로 변경
@@ -66,6 +75,10 @@ public class GameLogic
     public void SetState(BasePlayerState state) {
         _currentPlayerState?.OnExit(this);
         _currentPlayerState = state;
+
+        // 흑돌 턴일 때 금지마크 표시
+        UpdateForbiddenMarkersForCurrentPlayer();
+        
         _currentPlayerState?.OnEnter(this);
     }
 
@@ -91,6 +104,58 @@ public class GameLogic
 
         return false;
     }
+
+    private void UpdateForbiddenMarkersForCurrentPlayer()
+    {
+        var intBoard = GetIntBoard();
+        int currentPlayerId = 0;
+        if (_currentPlayerState == firstPlayerState)
+        {
+            currentPlayerId = 1; // 흑돌
+        }
+        else if (_currentPlayerState == secondPlayerState)
+        {
+            currentPlayerId = 2; // 백돌
+        }
+
+        // 먼저 이전에 표시됐을지 모르는 금수 마커 초기화
+        for (int r = 0; r < Constants.BlockColumnCount; r++)
+        {
+            for (int c = 0; c < Constants.BlockColumnCount; c++)
+            {
+                // _forbiddenMarkersBoard[r,c]가 true였다면, 즉 이전에 금수였다면
+                // 해당 위치의 마커를 빈칸으로 되돌림
+                if (_forbiddenMarkersBoard[r, c])
+                {
+                    BlockController.PlaceMarker(Block.MarkerType.None, r, c);
+                }
+            }
+        }
+
+        // 게임이 끝났거나(state == null) 플레이어가 정해지지 않은 경우, 금수판을 비우고 종료
+        if (_currentPlayerState == null)
+        {
+            Array.Clear(_forbiddenMarkersBoard, 0, _forbiddenMarkersBoard.Length);
+            return;
+        }
+
+        // RenjuRule을 사용하여 금수 위치를 새로 계산
+        RenjuRule.UpdateForbiddenMarkers(intBoard, currentPlayerId, _forbiddenMarkersBoard);
+
+        // 새로 계산된 금수 위치에 마커를 표시
+        for (int r = 0; r < Constants.BlockColumnCount; r++)
+        {
+            for (int c = 0; c < Constants.BlockColumnCount; c++)
+            {
+                if (_forbiddenMarkersBoard[r, c])
+                {
+                    // BlockController를 통해 'forbiddenMarker'를 실제로 화면에 표시
+                    BlockController.PlaceMarker(Block.MarkerType.forbiddenMarker, r, c);
+                }
+            }
+        }
+    }
+
     // 보드의 정보를 IsForbiddenMove에 쓰기위해 타입을 변환하여 가져옴
     private int[,] GetIntBoard()
     {
@@ -126,6 +191,7 @@ public class GameLogic
                 BlockController.PlaceMarker(Block.MarkerType.None, r, c);
             }
         }
+        Array.Clear(_forbiddenMarkersBoard, 0, _forbiddenMarkersBoard.Length);
     }
     
     // Game Over 처리
