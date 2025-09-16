@@ -10,4 +10,8 @@ public static class Constants {
     public const int minTierExp = 3;       // 하위 티어 요구 경험치
     public const int middleTierExp = 5;    // 중간 티어 요구 경험치
     public const int maxTierExp = 10;      // 상위 티어 요구 경험치
+
+    // 승리/패배 시 획득 골드
+    public const int winGold = 100;
+    public const int loseGold = 20;
 }
