@@ -207,6 +207,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Block
   blackMarkerSprite: {fileID: 21300000, guid: b1341bb1d3173ea4aaa1e8aa4ae8ce91, type: 3}
   whiteMarkerSprite: {fileID: 21300000, guid: 78c2c8e42ec09ca40aa627cdd0d8c7e3, type: 3}
+  forbiddenMarkerSprite: {fileID: 21300000, guid: 96ae7a2087e776449be4aa7146152421, type: 3}
   markerSpriteRenderer: {fileID: 454239908544378589}
 --- !u!1 &4024425666611702398
 GameObject:
