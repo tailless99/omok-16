@@ -3922,6 +3922,7 @@ MonoBehaviour:
   haveGold: 0
   isExpIncreaseActive: 0
   isExpDecreaseActive: 0
+  rematchPanel: {fileID: 1811821152304400205, guid: e3673b3f01cf7f5449f0f0e553ec850a, type: 3}
 --- !u!4 &1293430830
 Transform:
   m_ObjectHideFlags: 0
