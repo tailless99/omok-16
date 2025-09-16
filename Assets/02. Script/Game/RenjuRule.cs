@@ -114,13 +114,24 @@ namespace Gomoku
                 if (tempLine.Contains("_XXX_") || tempLine.Contains("_X_XX_") || tempLine.Contains("_XX_X_"))
                 {
                     openThreeCount++;
+                    Debug.Log(openThreeCount);
                 }
 
                 // 열린 4 검사 (B가 놓아져서 완성되는 경우)
                 if (tempLine.Contains("_XXXX_") || tempLine.Contains("_X_XXX_") || tempLine.Contains("_XX_XX_") || tempLine.Contains("_XXX_X_") ||
-                tempLine.Contains("OXXXX_") || tempLine.Contains("OX_XXX_") || tempLine.Contains("OXX_XX_") || tempLine.Contains("OXXX_X_"))
+                    // 한쪽이 상대 돌 'O' 또는 벽 'W'로 막힌 4의 모든 경우 추가
+                    tempLine.Contains("_XXXXO") || tempLine.Contains("OXXXX_") ||
+                    tempLine.Contains("OX_XXX_") || tempLine.Contains("_XXX_XO") ||
+                    tempLine.Contains("OXX_XX_") || tempLine.Contains("_XX_XXO") ||
+                    tempLine.Contains("OXXX_X_") || tempLine.Contains("_X_XXXO") ||
+                    tempLine.Contains("_XXXXW") || tempLine.Contains("WXXXX_") ||
+                    tempLine.Contains("_X_XXXW") || tempLine.Contains("WX_XXX_") ||
+                    tempLine.Contains("_XX_XXW") || tempLine.Contains("WXX_XX_") ||
+                    tempLine.Contains("_XXX_XW") || tempLine.Contains("WXXX_X_")
+                   )
                 {
                     openFourCount++;
+                    Debug.Log(openFourCount);
                 }
 
                 if (tempLine.Contains("XXXXXX_") || tempLine.Contains("XX_XX_XX"))
