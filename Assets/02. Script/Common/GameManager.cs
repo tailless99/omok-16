@@ -13,7 +13,7 @@ public class GameManager : Singleton<GameManager> {
 #region 멀티 모드 생성 후, 서버로 데이터 저장
     // TODO : 서버 연결 후, 플레이어 데이터를 서버에서 받아오도록 변경
     // 급수 저장 임시 변수
-    private int rateTier = 18;  // 최하급 티어
+    public int rateTier = 18;  // 최하급 티어
     private int tierEXP = 0;    // 경험치
     public int haveGold = 0;   // 소지금
 
