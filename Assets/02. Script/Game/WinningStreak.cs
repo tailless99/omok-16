@@ -25,7 +25,7 @@ public class WinningStreak : MonoBehaviour
     /// <param name="result"></param>
     public void WinningCount(GameLogic.GameResult result)
     {
-        if (_gameType == Constants.GameType.DualPlay && result == GameLogic.GameResult.PlayerAWin) //추후 DualPlay -> SinglePlay로 변경해야함
+        if (_gameType == Constants.GameType.SinglePlay && result == GameLogic.GameResult.PlayerAWin)
         {
             winningStreak += 1;
             if (winningStreak >= bestCount)
@@ -33,7 +33,7 @@ public class WinningStreak : MonoBehaviour
                 bestCount = winningStreak;
             }
         }
-        else if (_gameType == Constants.GameType.DualPlay && result == GameLogic.GameResult.PlayerBWin) //추후 DualPlay -> SinglePlay로 변경해야함
+        else if (_gameType == Constants.GameType.SinglePlay && result == GameLogic.GameResult.PlayerBWin)
         {
             winningStreak = 0;
         }
@@ -46,8 +46,10 @@ public class WinningStreak : MonoBehaviour
     /// </summary>
     public void WinningText()
     {
-        winningStreakText.text = $"<color=#FFD700>연승:</color>{winningStreak}연승\n<color=#E30000>최고 연승:</color>{bestCount}연승";
-
+        if (_gameType == Constants.GameType.SinglePlay)
+        {
+            winningStreakText.text = $"<color=#FFD700>연승:</color>{winningStreak}연승\n<color=#E30000>최고 연승:</color>{bestCount}연승";
+        }
     }
 
 
