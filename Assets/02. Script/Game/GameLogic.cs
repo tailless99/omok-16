@@ -46,7 +46,6 @@ public class GameLogic
                 firstPlayerState = new PlayerState(true);
                 GameManager.Instance.SetPlayerRateTierPanel(GameUIController.GameTurnPanelType.ATurn, firstPlayerState.rateTier, firstPlayerState.currentEXP);
                 secondPlayerState = new PlayerState(false);
-                GameManager.Instance.SetPlayerRateTierPanel(GameUIController.GameTurnPanelType.ATurn, secondPlayerState.rateTier, secondPlayerState.currentEXP);
                 break;
             case Constants.GameType.MultiPlay:
                 break;

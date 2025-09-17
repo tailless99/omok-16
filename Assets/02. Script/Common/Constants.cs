@@ -6,6 +6,10 @@ public static class Constants {
 
     public const int GameWinCount = 5;
 
+    // 티어 관련 상수
+    public const int minTier = 1;
+    public const int maxTier = 18;
+
     // 티어별 요구 경험치
     public const int minTierExp = 3;       // 하위 티어 요구 경험치
     public const int middleTierExp = 5;    // 중간 티어 요구 경험치
