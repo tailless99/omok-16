@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Runtime.InteropServices.WindowsRuntime;
 using UnityEditor.Rendering;
 using UnityEngine;
@@ -30,6 +31,9 @@ public class GameManager : Singleton<GameManager> {
 
     // Game 씬의 UI를 담당하는 객체
     private GameUIController _gameUIController;
+    
+    // 기보 시스템
+    private ReplayController _replayController;
 
 
     /// <summary>
@@ -128,6 +132,9 @@ public class GameManager : Singleton<GameManager> {
             if (_gameLogic == null) {
                 _gameLogic = new GameLogic(blockContoroller, _gameType);
             }
+            
+            
+            _replayController = FindFirstObjectByType<ReplayController>();
         }
     }
 
@@ -172,4 +179,9 @@ public class GameManager : Singleton<GameManager> {
         _gameType = this._gameType;
     }
 
+    public void GetTurnData()
+    {
+        var turnData = _gameLogic.GetTurnHistory();
+        _replayController.GetReplayData(turnData);
+    }
 }
