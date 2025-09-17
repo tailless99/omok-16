@@ -128,7 +128,8 @@ public class PlayerState : BasePlayerState {
                 currentEXP -= requireExp;
             }
         }
-
+        
+        GameManager.Instance.SetPlayerRateTierPanel(GameUIController.GameTurnPanelType.ATurn, rateTier, currentEXP);
         // TODO : 멀티 서버 연결 후, 플레이어의 티어 및 경험치 업데이트
         GameManager.Instance.SetTierInfo(rateTier, currentEXP, gieGold); // 임시변수
     }

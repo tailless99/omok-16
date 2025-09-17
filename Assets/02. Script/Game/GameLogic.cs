@@ -61,13 +61,6 @@ public class GameLogic
     public Constants.PlayerType[,] GetBoard() {
         return _board;
     }
-    
-    // 외부에서 금수 보드를 가져올 수 있도록 반환
-    public bool[,] GetForbiddenMarkersBoard()
-    {
-        return _forbiddenMarkersBoard;
-    }
-
 
     // 턴이 바뀔 때, 기존 진행하던 상태를 Exit하고
     // 이번 턴의 상태를 _currentPlayerState로 변경
@@ -194,7 +187,16 @@ public class GameLogic
     }
     
     // Game Over 처리
-    public void EndGame(GameResult gameResult) {
+    public void EndGame(GameResult gameResult)
+    {
+        // 게임타입에 따라 나오는 텍스트가 다르게
+        string text = "";
+        if (_gameType == Constants.GameType.SinglePlay && gameResult == GameResult.PlayerBWin)
+            text = "재도전 하시겠습니까?";
+        else
+            text = "다시시작 하시겠습니까?";
+        
+        
         SetState(null);
         firstPlayerState = null;
         secondPlayerState = null;
@@ -207,7 +209,7 @@ public class GameLogic
 
         // 유저에게 Game Over 표시
         GameManager.Instance.OpenConfirmPanel("게임 오버", () => {
-            GameManager.Instance.OpenRematchPanel("재도전 하시겠습니까?", () =>
+            GameManager.Instance.OpenRematchPanel(text, () =>
             {
                 StartGame();
             });
