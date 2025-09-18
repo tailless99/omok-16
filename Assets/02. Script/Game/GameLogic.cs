@@ -40,6 +40,8 @@ public class GameLogic
     private void StartGame()
     {
         turnHistory = new List<TurnState>();
+        currentTurnCount = 0;
+        GameManager.Instance.UpdateTurnUI(currentTurnCount, currentTurnCount);
         GameManager.Instance.SetupReplayButtons(false);
         BoardReset();
         switch (_gameType)
