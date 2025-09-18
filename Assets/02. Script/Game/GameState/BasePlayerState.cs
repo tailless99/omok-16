@@ -131,7 +131,8 @@ public abstract class BasePlayerState {
                 rankType = Constants.RankChangeType.RankDown; // 랭크 다운 반환
             }
         }
-
+        
+        GameManager.Instance.SetPlayerRateTierPanel(GameUIController.GameTurnPanelType.ATurn, rateTier, currentEXP);
         // 최종적으로 로컬 플레이어의 티어 및 경험치, 골드 정보 업데이트
         GameManager.Instance.SetTierInfo(localPlayer.rateTier, localPlayer.currentEXP, gieGold);
     }
