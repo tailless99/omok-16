@@ -206,4 +206,9 @@ public class GameManager : Singleton<GameManager> {
         if (_replayController != null)
             _replayController.SetupButtons(isON);
     }
+
+    public void OnReplayMode()
+    {
+        _gameLogic.IntoReplayMode();
+    }
 }
