@@ -184,4 +184,17 @@ public class GameManager : Singleton<GameManager> {
         var turnData = _gameLogic.GetTurnHistory();
         _replayController.GetReplayData(turnData);
     }
+
+    // 턴 UI를 업데이트하는 함수
+    public void UpdateTurnUI(int currentTurn, int totalTurn)
+    {
+        _replayController.UpdateUI(currentTurn, totalTurn);
+    }
+
+    // 플레이 중 버튼을 숨기는 함수
+    public void SetupReplayButtons(bool isON)
+    {
+        if (_replayController != null)
+            _replayController.SetupButtons(isON);
+    }
 }

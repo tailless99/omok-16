@@ -39,6 +39,7 @@ public class WinningStreak : MonoBehaviour
         }
 
         GameManager.Instance.SetWinningStreak(winningStreak, bestCount);
+        WinningText();
     }
 
     /// <summary>

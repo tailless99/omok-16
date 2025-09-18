@@ -39,6 +39,8 @@ public class GameLogic
     
     private void StartGame()
     {
+        turnHistory = new List<TurnState>();
+        GameManager.Instance.SetupReplayButtons(false);
         BoardReset();
         switch (_gameType)
         {
@@ -99,6 +101,7 @@ public class GameLogic
                 BlockController.PlaceMarker(Block.MarkerType.blackMarker, row, col);
                 currentTurnCount++;
                 SaveCurrentTurn(row, col, 1);
+                GameManager.Instance.UpdateTurnUI(currentTurnCount, currentTurnCount);
                 return true;
             }
         }
@@ -107,6 +110,7 @@ public class GameLogic
             BlockController.PlaceMarker(Block.MarkerType.whiteMarker, row, col);
             currentTurnCount++;
             SaveCurrentTurn(row, col, 2);
+            GameManager.Instance.UpdateTurnUI(currentTurnCount, currentTurnCount);
             return true;
         }
 
@@ -206,6 +210,7 @@ public class GameLogic
     public void EndGame(GameResult gameResult)
     {
         GameManager.Instance.GetTurnData();
+        GameManager.Instance.SetupReplayButtons(true);
         SetState(null);
         firstPlayerState = null;
         secondPlayerState = null;

@@ -30,6 +30,13 @@ public class ReplayController : MonoBehaviour
     void Awake()
     {
         _blockController = FindFirstObjectByType<BlockController>();
+        SetupButtons(false);
+    }
+
+    public void SetupButtons(bool isON)
+    {
+        prevButton.gameObject.SetActive(isON);
+        nextButton.gameObject.SetActive(isON);
     }
 
     public void GetReplayData(List<TurnState> turnData)
@@ -38,7 +45,7 @@ public class ReplayController : MonoBehaviour
         currentIndex = turnHistory.Count;
         
         ApplyBoard();
-        UpdateUI();
+        UpdateUI(currentIndex, turnHistory.Count);
     }
 
     // 이전 수로 되돌리기
@@ -52,7 +59,7 @@ public class ReplayController : MonoBehaviour
         boardState[lastTurn.row, lastTurn.col] = 0;
         _blockController.RemoveMarker(lastTurn.row, lastTurn.col); // 돌 제거 (별도 구현 필요)
 
-        UpdateUI();
+        UpdateUI(currentIndex, turnHistory.Count);
     }
 
     // 다음 수로 진행하기
@@ -70,7 +77,7 @@ public class ReplayController : MonoBehaviour
 
         currentIndex++;
 
-        UpdateUI();
+        UpdateUI(currentIndex, turnHistory.Count);
     }
 
     // currentIndex 기준으로 보드 재구성
@@ -95,8 +102,8 @@ public class ReplayController : MonoBehaviour
         }
     }
 
-    private void UpdateUI()
+    public void UpdateUI(int currentTurn, int totalTurn)
     {
-        turnNumber.text = $"{currentIndex} / {turnHistory.Count}";
+        turnNumber.text = $"{currentTurn} / {totalTurn}";
     }
 }
