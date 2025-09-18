@@ -152,8 +152,10 @@ namespace Gomoku
                 // 1. 열린 연속된 3, 2. 중간이 비어있는 열린 3
                 if (tempLine.Contains("_XXX_") || tempLine.Contains("_X_XX_") || tempLine.Contains("_XX_X_"))
                 {
-                    if (tempLine.Contains("_X_XXX_") || tempLine.Contains("_XXX_X_") ||
-                        tempLine.Contains("W_XXX_") || tempLine.Contains("_XXX_W"))
+                    if (tempLine.Contains("_X_XXX_") || tempLine.Contains("_XXX_X_") || 
+                        tempLine.Contains("_X_XXXW") || tempLine.Contains("WXXX_X_") ||
+                        tempLine.Contains("W_XXX_") || tempLine.Contains("_XXX_W") ||
+                        tempLine.Contains("O_XXX_O"))
                         continue;
                     openThreeCount++;
                 }
