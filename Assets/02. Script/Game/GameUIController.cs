@@ -1,3 +1,4 @@
+using System;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -11,9 +12,24 @@ public class GameUIController : MonoBehaviour
     // 급수 UI 컨테이너
     [SerializeField] private RateTierPanelController rateTierPanelController;
 
+    // 경험치, 골드 획득 안내 패널
+    [SerializeField] private RewardPanelController rewardPanelController;
 
+    /// <summary>
+    /// 리워드 패널 업데이트 이벤트
+    /// 
+    /// </summary>
+    public static Action<int, int, int, int, Constants.RankChangeType> onRewardPanelUpdate;
 
     public enum GameTurnPanelType { None, ATurn, BTurn }
+
+    private void OnEnable() {
+        onRewardPanelUpdate += rewardPanelController.InitUI;
+    }
+
+    private void OnDisable() {
+        onRewardPanelUpdate -= rewardPanelController.InitUI;
+    }
 
     public void OnClickBackButton() {
         GameManager.Instance.OpenConfirmPanel("게임을 종료하시겠습니까?", () => {

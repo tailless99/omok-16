@@ -2,6 +2,10 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
+/// <summary>
+/// 상점 시스템 컨테이너
+/// 작성자 : 이동현
+/// </summary>
 public class ShopContainer : MonoBehaviour
 {
     [SerializeField] private TextMeshProUGUI haveGoldText;
