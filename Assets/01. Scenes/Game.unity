@@ -16789,7 +16789,7 @@ GameObject:
   - component: {fileID: 1066846810}
   - component: {fileID: 1066846809}
   m_Layer: 5
-  m_Name: Text (TMP)
+  m_Name: '[Text] EnemyName'
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -16811,8 +16811,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0.5}
   m_AnchorMax: {x: 0, y: 0.5}
-  m_AnchoredPosition: {x: 9, y: 10.7446}
-  m_SizeDelta: {x: 78.472, y: 68.5109}
+  m_AnchoredPosition: {x: -66, y: 10.7446}
+  m_SizeDelta: {x: 200, y: 68.5109}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1066846809
 MonoBehaviour:
@@ -16870,7 +16870,7 @@ MonoBehaviour:
   m_fontSizeMin: 18
   m_fontSizeMax: 72
   m_fontStyle: 0
-  m_HorizontalAlignment: 1
+  m_HorizontalAlignment: 4
   m_VerticalAlignment: 256
   m_textAlignment: 65535
   m_characterSpacing: 0
@@ -20715,6 +20715,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1378224748}
+  - component: {fileID: 1378224749}
   m_Layer: 5
   m_Name: Enemy UI
   m_TagString: Untagged
@@ -20745,6 +20746,19 @@ RectTransform:
   m_AnchoredPosition: {x: -160, y: -387}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &1378224749
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1378224747}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ee5aed1874a9305478852d1fae7775c9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::EnemyUI
+  enemyNameText: {fileID: 1066846809}
 --- !u!1001 &1388752147
 PrefabInstance:
   m_ObjectHideFlags: 0
