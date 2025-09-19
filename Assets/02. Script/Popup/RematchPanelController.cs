@@ -29,11 +29,16 @@ public class RematchPanelController : PanelController {
         });
 
     }
+    
+    public void OnClickCloseButton() {
+        Hide();
+    }
 
     /// <summary>
     /// X 버튼 클릭 시, 호출되는 메서드
     /// </summary>
-    public void OnClickCloseButton() {
+    public void OnClickReplayButton() {
         Hide();
+        GameManager.Instance.OnReplayMode();
     }
 }

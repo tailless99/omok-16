@@ -1,3 +1,4 @@
+using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
@@ -8,6 +9,7 @@ public class Block : MonoBehaviour
     [SerializeField] private Sprite blackMarkerSprite;
     [SerializeField] private Sprite whiteMarkerSprite;
     [SerializeField] private Sprite forbiddenMarkerSprite;
+    [SerializeField] private TextMeshProUGUI turnNumberText;
     [SerializeField] private Image markerSpriteRenderer;
 
     public delegate void OnBlockClicked(int index);
@@ -75,5 +77,19 @@ public class Block : MonoBehaviour
     // 4. 블럭 터치
     public void OnMouseClick() {
         _onBlockClicked?.Invoke(_blockIndex);
+    }
+    
+    // 5. 기보시스템 번호 새기기
+    public void SetTurnNumber(int turn)
+    {
+        if (turn > 0)
+        {
+            turnNumberText.text = turn.ToString();
+            turnNumberText.gameObject.SetActive(true);
+        }
+        else
+        {
+            turnNumberText.gameObject.SetActive(false);
+        }
     }
 }
