@@ -60,6 +60,9 @@ public class ReplayController : MonoBehaviour
         _blockController.RemoveMarker(lastTurn.row, lastTurn.col); // 돌 제거 (별도 구현 필요)
 
         UpdateUI(currentIndex, turnHistory.Count);
+
+        // UI 사운드 추가
+        SoundManager.Instance.PlayUI(SoundType.UI_Click);
     }
 
     // 다음 수로 진행하기
@@ -78,6 +81,9 @@ public class ReplayController : MonoBehaviour
 
 
         UpdateUI(currentIndex, turnHistory.Count);
+
+        // UI 사운드 추가
+        SoundManager.Instance.PlayUI(SoundType.UI_Click);
     }
 
     // currentIndex 기준으로 보드 재구성

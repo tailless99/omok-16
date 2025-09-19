@@ -2560,18 +2560,18 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 164533876}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1200904959}
   - {fileID: 2061403850}
-  m_Father: {fileID: 293010151}
+  m_Father: {fileID: 729276200}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchoredPosition: {x: -707, y: -460}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &164533878
@@ -4775,6 +4775,7 @@ GameObject:
   - component: {fileID: 293010149}
   - component: {fileID: 293010148}
   - component: {fileID: 293010152}
+  - component: {fileID: 293010153}
   m_Layer: 5
   m_Name: Canvas
   m_TagString: Untagged
@@ -4862,7 +4863,6 @@ RectTransform:
   - {fileID: 1378224748}
   - {fileID: 729276200}
   - {fileID: 1758501620}
-  - {fileID: 164533877}
   - {fileID: 1088951039}
   - {fileID: 2141917887}
   - {fileID: 1458349889}
@@ -4891,6 +4891,18 @@ MonoBehaviour:
   _gameType: 0
   rateTierPanelController: {fileID: 164533878}
   rewardPanelController: {fileID: 2141917891}
+--- !u!114 &293010153
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 293010147}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c3eac26ea2ecbbd4a863ae2f1cb8370b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::SubPannelController
 --- !u!1001 &299458993
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -9914,6 +9926,53 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8b485f7231b586547a92923ab97e2fbd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Block
+--- !u!1 &664543760
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 664543762}
+  - component: {fileID: 664543761}
+  m_Layer: 0
+  m_Name: BGMController
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &664543761
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 664543760}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7effe2500be87234e8e16e518d8720d4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::GameSceneBGMController
+  phase1Duration: 60
+  phase2Duration: 60
+  fadeDuration: 0.8
+--- !u!4 &664543762
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 664543760}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -35.09471, y: 729.0106, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &666460615
 GameObject:
   m_ObjectHideFlags: 0
@@ -10508,7 +10567,8 @@ RectTransform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 164533877}
   m_Father: {fileID: 293010151}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 1}
@@ -16789,7 +16849,7 @@ GameObject:
   - component: {fileID: 1066846810}
   - component: {fileID: 1066846809}
   m_Layer: 5
-  m_Name: '[Text] EnemyName'
+  m_Name: Text (TMP)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -16811,8 +16871,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0.5}
   m_AnchorMax: {x: 0, y: 0.5}
-  m_AnchoredPosition: {x: -66, y: 10.7446}
-  m_SizeDelta: {x: 200, y: 68.5109}
+  m_AnchoredPosition: {x: 9, y: 10.7446}
+  m_SizeDelta: {x: 78.472, y: 68.5109}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1066846809
 MonoBehaviour:
@@ -16870,7 +16930,7 @@ MonoBehaviour:
   m_fontSizeMin: 18
   m_fontSizeMax: 72
   m_fontStyle: 0
-  m_HorizontalAlignment: 4
+  m_HorizontalAlignment: 1
   m_VerticalAlignment: 256
   m_textAlignment: 65535
   m_characterSpacing: 0
@@ -20715,7 +20775,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1378224748}
-  - component: {fileID: 1378224749}
   m_Layer: 5
   m_Name: Enemy UI
   m_TagString: Untagged
@@ -20746,19 +20805,6 @@ RectTransform:
   m_AnchoredPosition: {x: -160, y: -387}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &1378224749
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1378224747}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ee5aed1874a9305478852d1fae7775c9, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::EnemyUI
-  enemyNameText: {fileID: 1066846809}
 --- !u!1001 &1388752147
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -26528,7 +26574,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1758501622}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 293010153}
+        m_TargetAssemblyTypeName: SubPannelController, Assembly-CSharp
+        m_MethodName: OnOptionsButtonClicked
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1758501622
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -31412,3 +31470,4 @@ SceneRoots:
   - {fileID: 416826231}
   - {fileID: 293010151}
   - {fileID: 481676460}
+  - {fileID: 664543762}
