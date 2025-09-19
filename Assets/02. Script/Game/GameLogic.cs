@@ -40,6 +40,8 @@ public class GameLogic
     private void StartGame()
     {
         turnHistory = new List<TurnState>();
+        currentTurnCount = 0;
+        GameManager.Instance.UpdateTurnUI(currentTurnCount, currentTurnCount);
         GameManager.Instance.SetupReplayButtons(false);
         BoardReset();
         switch (_gameType)
@@ -208,6 +210,13 @@ public class GameLogic
     // Game Over 처리
     public void EndGame(GameResult gameResult)
     {
+        // 게임타입에 따라 나오는 텍스트가 다르게
+        string text = "";
+        if (_gameType == Constants.GameType.SinglePlay && gameResult == GameResult.PlayerBWin)
+            text = "재도전 하시겠습니까?";
+        else
+            text = "다시시작 하시겠습니까?"; // 확인
+        
         GameManager.Instance.GetTurnData();
         GameManager.Instance.SetupReplayButtons(true);
         SetState(null);
@@ -222,7 +231,7 @@ public class GameLogic
 
         // 유저에게 Game Over 표시
         GameManager.Instance.OpenConfirmPanel("게임 오버", () => {
-            GameManager.Instance.OpenRematchPanel("재도전 하시겠습니까?", () =>
+            GameManager.Instance.OpenRematchPanel(text, () =>
             {
                 StartGame();
             });

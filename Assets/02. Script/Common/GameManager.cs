@@ -196,7 +196,8 @@ public class GameManager : Singleton<GameManager> {
     // 턴 UI를 업데이트하는 함수
     public void UpdateTurnUI(int currentTurn, int totalTurn)
     {
-        _replayController.UpdateUI(currentTurn, totalTurn);
+        if (_replayController != null)
+            _replayController.UpdateUI(currentTurn, totalTurn);
     }
 
     // 플레이 중 버튼을 숨기는 함수

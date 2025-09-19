@@ -145,7 +145,8 @@ public abstract class BasePlayerState {
                 Debug.Log("Lose");
             }
         }
-
+        
+        GameManager.Instance.SetPlayerRateTierPanel(GameUIController.GameTurnPanelType.ATurn, rateTier, currentEXP);
         // 최종적으로 로컬 플레이어의 티어 및 경험치, 골드 정보 업데이트
         rateTier = localPlayer.rateTier;
         currentEXP = localPlayer.currentEXP;
