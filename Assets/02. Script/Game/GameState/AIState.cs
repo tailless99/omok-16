@@ -1,4 +1,5 @@
 using System.Reflection;
+using Unity.VisualScripting;
 using UnityEngine;
 
 /// <summary>
@@ -19,9 +20,11 @@ public class AIState : BasePlayerState {
         
         // AI 처리
         var board = gameLogic.GetBoard();
+
+        int difficulty = GetDifficulty();
         
         // GetBestMove 연산을 백그라운드 스레드에서 실행, await 때문에 GetBestMove 함수가 완료 될 때까지 대기
-        (int row, int col)? result = await OmokAI.GetBestMove(board);
+        (int row, int col)? result = await OmokAI.GetBestMove(board , difficulty);
         
         
         if (result.HasValue) {
@@ -31,7 +34,36 @@ public class AIState : BasePlayerState {
             gameLogic.EndGame(GameLogic.GameResult.Draw);
         }
     }
+    
+    /// <summary>
+    /// 작성자 : 김동건
+    /// 플레이어의 티어에 따라 최대 연산 횟수 제한으로 AI 난이도 차이 구현
+    /// </summary>
+    /// <returns></returns>
+    private int GetDifficulty()
+    {
+        int difficulty = 0;
+        GameManager.Instance.GetTierInfo(out int tier, out int tierExp);
+        
+        switch (tier/5)
+        {
+            case 3: // 급수 15 ~ 18
+                difficulty = 1;
+                break;
+            case 2: // 급수 10 ~ 14
+                difficulty = 5;
+                break;
+            case 1: // 급수 9 ~ 5
+                difficulty = 15;
+                break;
+            case 0: // 급수 1 ~ 4
+                difficulty = 100;
+                break;
+        }
 
+        return difficulty;
+    }
+    
     protected override void HandleNextTurn(GameLogic gameLogic) {
         gameLogic.SetState(gameLogic.firstPlayerState);
     }

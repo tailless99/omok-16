@@ -9,6 +9,10 @@ public class GameUIController : MonoBehaviour
     [SerializeField] private GameObject playerATurnPanel;
     [SerializeField] private GameObject playerBTurnPanel;
 
+    // AI 턴일때 로딩 이미지 출력을 위한 변수
+    [SerializeField] private GameObject aiTurnPanel;
+    public Constants.GameType _gameType;
+    
     // 급수 UI 컨테이너
     [SerializeField] private RateTierPanelController rateTierPanelController;
 
@@ -22,6 +26,11 @@ public class GameUIController : MonoBehaviour
     public static Action<int, int, int, int, Constants.RankChangeType> onRewardPanelUpdate;
 
     public enum GameTurnPanelType { None, ATurn, BTurn }
+
+    private void Start()
+    { 
+        GameManager.Instance.GetGameType(out _gameType);
+    }
 
     private void OnEnable() {
         onRewardPanelUpdate += rewardPanelController.InitUI;
@@ -42,14 +51,20 @@ public class GameUIController : MonoBehaviour
             case GameTurnPanelType.None:
                 playerATurnPanel.SetActive(false);
                 playerBTurnPanel.SetActive(false);
+                aiTurnPanel.SetActive(false);
                 break;
             case GameTurnPanelType.ATurn:
                 playerATurnPanel.SetActive(true);
                 playerBTurnPanel.SetActive(false);
+                aiTurnPanel.SetActive(false);
                 break;
             case GameTurnPanelType.BTurn:
                 playerATurnPanel.SetActive(false);
                 playerBTurnPanel.SetActive(true);
+                if (_gameType == Constants.GameType.SinglePlay) // AI 턴일때 로딩 이미지 출력을 위한 조건문
+                {
+                    aiTurnPanel.SetActive(true);
+                }
                 break;
         }
     }
