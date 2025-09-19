@@ -16,8 +16,8 @@ public class RewardPanelController : MonoBehaviour
 
     public void InitUI(int prevExp, int nextExp, int prevGold, int nextGold, Constants.RankChangeType rankType) {
         // 초기화
-        expText.text = $"EXP : {prevExp} => {nextExp}";
-        goldText.text = $"Gold : {prevGold} => {nextGold}";
+        expText.text = $"{prevExp} => {nextExp}";
+        goldText.text = $"{prevGold} => {nextGold}";
 
         rankText.text = $"{GameManager.Instance.rateTier}급";
         var rankUptext = rankType == Constants.RankChangeType.RankUp ? "Rank Up" : rankType == Constants.RankChangeType.RankDown ? "Rank Down" : "";

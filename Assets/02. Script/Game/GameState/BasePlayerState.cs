@@ -68,11 +68,19 @@ public abstract class BasePlayerState {
         // 현재 함수를 호출하는 플레이어가 누구인지에 따라 localPlayer를 할당
         BasePlayerState localPlayer;
 
-        if (isFirstPlayer) {
+        // 싱글 or 듀얼 플레이 모드의 경우
+        GameManager.Instance.GetGameType(out GameType gameType);
+        if (gameType == Constants.GameType.SinglePlay || gameType == Constants.GameType.DualPlay) {
             localPlayer = gameLogic.firstPlayerState;
         }
+        // 멀티 플레이의 경우
         else {
-            localPlayer = gameLogic.secondPlayerState;
+            if (isFirstPlayer) {
+                localPlayer = gameLogic.firstPlayerState;
+            }
+            else {
+                localPlayer = gameLogic.secondPlayerState;
+            }
         }
         
         // 게임 결과에 따라 경험치와 골드 계산
@@ -104,6 +112,9 @@ public abstract class BasePlayerState {
 
         // 로컬 플레이어의 경험치 업데이트
         localPlayer.currentEXP += expChange;
+        if(localPlayer.currentEXP < 0) {
+            localPlayer.currentEXP = 0; // 경험치는 0 미만으로 떨어지지 않음
+        }
 
         // 티어 랭크 업 판정
         var requireExp = localPlayer.rateTier >= 10 ?
@@ -112,13 +123,15 @@ public abstract class BasePlayerState {
 
         // 랭크업 조건
         rankType = Constants.RankChangeType.None; // 초기값 설정
+        
         if (localPlayer.currentEXP >= requireExp) {
             // 최고 랭크일 때는 더 이상 랭크업하지 않음
             if (localPlayer.rateTier > Constants.minTier) {
                 localPlayer.rateTier--;
                 localPlayer.currentEXP -= requireExp;
-
+                
                 rankType = Constants.RankChangeType.RankUp; // 랭크 업 반환
+                Debug.Log("win");
             }
         }
         // 랭크다운 조건
@@ -129,11 +142,14 @@ public abstract class BasePlayerState {
                 localPlayer.currentEXP += requireExp;
 
                 rankType = Constants.RankChangeType.RankDown; // 랭크 다운 반환
+                Debug.Log("Lose");
             }
         }
         
         GameManager.Instance.SetPlayerRateTierPanel(GameUIController.GameTurnPanelType.ATurn, rateTier, currentEXP);
         // 최종적으로 로컬 플레이어의 티어 및 경험치, 골드 정보 업데이트
+        rateTier = localPlayer.rateTier;
+        currentEXP = localPlayer.currentEXP;
         GameManager.Instance.SetTierInfo(localPlayer.rateTier, localPlayer.currentEXP, gieGold);
     }
 }

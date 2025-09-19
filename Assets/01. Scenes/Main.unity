@@ -4269,9 +4269,11 @@ MonoBehaviour:
   signInPanel: {fileID: 0}
   registerPanel: {fileID: 0}
   rematchPanel: {fileID: 1811821152304400205, guid: e3673b3f01cf7f5449f0f0e553ec850a, type: 3}
+  rateTier: 18
   haveGold: 0
   isExpIncreaseActive: 0
   isExpDecreaseActive: 0
+  localPlayer: 1
 --- !u!4 &1293430830
 Transform:
   m_ObjectHideFlags: 0

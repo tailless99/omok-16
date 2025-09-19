@@ -7,14 +7,16 @@ public class WinningStreak : MonoBehaviour
 {
     public Constants.GameType _gameType;
     public GameLogic gameLogic;
-    private int winningStreak;
-    private int bestCount;
+    private int singlePlayWinningStreak;
+    private int singlePlayBestCount;
+    private int dualPlayWinningStreak;
+    private int dualPlayBestCount;
     public TextMeshProUGUI winningStreakText;
 
     public void Start()
     {
         GameManager.Instance.GetGameType(out _gameType);
-        GameManager.Instance.GetWinningStreak(out winningStreak, out bestCount);
+        GameManager.Instance.GetWinningStreak(out singlePlayWinningStreak, out singlePlayBestCount, out dualPlayWinningStreak, out dualPlayBestCount);
         WinningText();
     }
 
@@ -27,18 +29,32 @@ public class WinningStreak : MonoBehaviour
     {
         if (_gameType == Constants.GameType.SinglePlay && result == GameLogic.GameResult.PlayerAWin)
         {
-            winningStreak += 1;
-            if (winningStreak >= bestCount)
+            singlePlayWinningStreak += 1;
+            if (singlePlayWinningStreak >= singlePlayBestCount)
             {
-                bestCount = winningStreak;
+                singlePlayBestCount = singlePlayWinningStreak;
             }
         }
         else if (_gameType == Constants.GameType.SinglePlay && result == GameLogic.GameResult.PlayerBWin)
         {
-            winningStreak = 0;
+            singlePlayWinningStreak = 0;
         }
 
-        GameManager.Instance.SetWinningStreak(winningStreak, bestCount);
+
+        else if (_gameType == Constants.GameType.DualPlay && result == GameLogic.GameResult.PlayerAWin)
+        {
+            dualPlayWinningStreak += 1;
+            if (dualPlayWinningStreak >= dualPlayBestCount)
+            {
+                dualPlayBestCount = dualPlayWinningStreak;
+            }
+        }
+        else if (_gameType == Constants.GameType.DualPlay && result == GameLogic.GameResult.PlayerBWin)
+        {
+            dualPlayWinningStreak = 0;
+        }
+
+        GameManager.Instance.SetWinningStreak(singlePlayWinningStreak, singlePlayBestCount, dualPlayWinningStreak, dualPlayBestCount);
         WinningText();
     }
 
@@ -47,9 +63,13 @@ public class WinningStreak : MonoBehaviour
     /// </summary>
     public void WinningText()
     {
-        if (_gameType == Constants.GameType.SinglePlay)
+        if (_gameType == Constants.GameType.SinglePlay) //DualPlay -> SinglePlay 바꿔야함
         {
-            winningStreakText.text = $"<color=#FFD700>연승:</color>{winningStreak}연승\n<color=#E30000>최고 연승:</color>{bestCount}연승";
+            winningStreakText.text = $"<color=#FFD700>연승:</color>{singlePlayWinningStreak}연승\n<color=#E30000>최고 연승:</color>{singlePlayBestCount}연승";
+        }
+        else if (_gameType == Constants.GameType.DualPlay) //DualPlay -> SinglePlay 바꿔야함
+        {
+            winningStreakText.text = $"<color=#FFD700>연승:</color>{dualPlayWinningStreak}연승\n<color=#E30000>최고 연승:</color>{dualPlayBestCount}연승";
         }
     }
 

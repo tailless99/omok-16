@@ -69,13 +69,13 @@ public class ReplayController : MonoBehaviour
 
         var nextTurn = turnHistory[currentIndex];
         boardState[nextTurn.row, nextTurn.col] = nextTurn.currPlayer;
+        currentIndex++;
 
         if (nextTurn.currPlayer == 1)
-            _blockController.PlaceMarker(Block.MarkerType.blackMarker, nextTurn.row, nextTurn.col);
+            _blockController.PlaceMarker(Block.MarkerType.blackMarker, nextTurn.row, nextTurn.col, currentIndex);
         else
-            _blockController.PlaceMarker(Block.MarkerType.whiteMarker, nextTurn.row, nextTurn.col);
+            _blockController.PlaceMarker(Block.MarkerType.whiteMarker, nextTurn.row, nextTurn.col, currentIndex);
 
-        currentIndex++;
 
         UpdateUI(currentIndex, turnHistory.Count);
     }
@@ -83,22 +83,14 @@ public class ReplayController : MonoBehaviour
     // currentIndex 기준으로 보드 재구성
     private void ApplyBoard()
     {
-        // 보드 초기화
-        for (int r = 0; r < 15; r++)
-        for (int c = 0; c < 15; c++)
-            boardState[r, c] = 0;
+        // 먼저 전체 보드 초기화
+        _blockController.ClearMarkers();
 
-        _blockController.ClearMarkers(); // 모든 돌 제거 (별도 구현 필요)
-
-        for (int i = 0; i < currentIndex; i++)
+        foreach (var replay in turnHistory)
         {
-            var t = turnHistory[i];
-            boardState[t.row, t.col] = t.currPlayer;
-
-            if (t.currPlayer == 1)
-                _blockController.PlaceMarker(Block.MarkerType.blackMarker, t.row, t.col);
-            else
-                _blockController.PlaceMarker(Block.MarkerType.whiteMarker, t.row, t.col);
+            // 플레이어 돌 표시
+            var markerType = replay.currPlayer == 1 ? Block.MarkerType.blackMarker : Block.MarkerType.whiteMarker;
+            _blockController.PlaceMarker(markerType, replay.row, replay.col, replay.turnNumber);
         }
     }
 

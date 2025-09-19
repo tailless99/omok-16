@@ -99,8 +99,8 @@ public class GameLogic
             if (RenjuRule.IsForbiddenMove(intBoard, row, col, 1) == false)
             {
                 _board[row, col] = playerType;
-                BlockController.PlaceMarker(Block.MarkerType.blackMarker, row, col);
                 currentTurnCount++;
+                BlockController.PlaceMarker(Block.MarkerType.blackMarker, row, col, 0);
                 SaveCurrentTurn(row, col, 1);
                 GameManager.Instance.UpdateTurnUI(currentTurnCount, currentTurnCount);
                 return true;
@@ -108,8 +108,8 @@ public class GameLogic
         }
         else if(playerType == Constants.PlayerType.PlayerB) {
             _board[row, col] = playerType;
-            BlockController.PlaceMarker(Block.MarkerType.whiteMarker, row, col);
             currentTurnCount++;
+            BlockController.PlaceMarker(Block.MarkerType.whiteMarker, row, col, 0);
             SaveCurrentTurn(row, col, 2);
             GameManager.Instance.UpdateTurnUI(currentTurnCount, currentTurnCount);
             return true;
@@ -140,7 +140,7 @@ public class GameLogic
                 // 해당 위치의 마커를 빈칸으로 되돌림
                 if (_forbiddenMarkersBoard[r, c])
                 {
-                    BlockController.PlaceMarker(Block.MarkerType.None, r, c);
+                    BlockController.PlaceMarker(Block.MarkerType.None, r, c, 0);
                 }
             }
         }
@@ -163,7 +163,7 @@ public class GameLogic
                 if (_forbiddenMarkersBoard[r, c])
                 {
                     // BlockController를 통해 'forbiddenMarker'를 실제로 화면에 표시
-                    BlockController.PlaceMarker(Block.MarkerType.forbiddenMarker, r, c);
+                    BlockController.PlaceMarker(Block.MarkerType.forbiddenMarker, r, c, 0);
                 }
             }
         }
@@ -201,7 +201,7 @@ public class GameLogic
             for (int c = 0; c < Constants.BlockColumnCount; c++)
             {
                 _board[r, c] = Constants.PlayerType.None;
-                BlockController.PlaceMarker(Block.MarkerType.None, r, c);
+                BlockController.PlaceMarker(Block.MarkerType.None, r, c, 0);
             }
         }
         Array.Clear(_forbiddenMarkersBoard, 0, _forbiddenMarkersBoard.Length);
@@ -217,8 +217,6 @@ public class GameLogic
         else
             text = "다시시작 하시겠습니까?"; // 확인
         
-        GameManager.Instance.GetTurnData();
-        GameManager.Instance.SetupReplayButtons(true);
         SetState(null);
         firstPlayerState = null;
         secondPlayerState = null;
@@ -268,5 +266,11 @@ public class GameLogic
     public List<TurnState> GetTurnHistory()
     {
         return turnHistory;
+    }
+
+    public void IntoReplayMode()
+    {
+        GameManager.Instance.GetTurnData();
+        GameManager.Instance.SetupReplayButtons(true);
     }
 }
