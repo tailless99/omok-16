@@ -41,6 +41,8 @@ public class GameUIController : MonoBehaviour
     }
 
     public void OnClickBackButton() {
+        // UI 사운드 추가
+        SoundManager.Instance.PlayUI(SoundType.UI_Click);
         GameManager.Instance.OpenConfirmPanel("게임을 종료하시겠습니까?", () => {
             GameManager.Instance.ChangeToMainScene();
         });
