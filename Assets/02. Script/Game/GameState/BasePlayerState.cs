@@ -112,9 +112,6 @@ public abstract class BasePlayerState {
 
         // 로컬 플레이어의 경험치 업데이트
         localPlayer.currentEXP += expChange;
-        if(localPlayer.currentEXP < 0) {
-            localPlayer.currentEXP = 0; // 경험치는 0 미만으로 떨어지지 않음
-        }
 
         // 티어 랭크 업 판정
         var requireExp = localPlayer.rateTier >= 10 ?
@@ -145,7 +142,12 @@ public abstract class BasePlayerState {
                 Debug.Log("Lose");
             }
         }
-        
+
+        // 경험치 예외처리
+        if (localPlayer.currentEXP < 0) {
+            localPlayer.currentEXP = 0; // 경험치는 0 미만으로 떨어지지 않음
+        }
+
         // 최종적으로 로컬 플레이어의 티어 및 경험치, 골드 정보 업데이트
         rateTier = localPlayer.rateTier;
         currentEXP = localPlayer.currentEXP;
