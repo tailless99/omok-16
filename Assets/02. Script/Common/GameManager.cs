@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Runtime.InteropServices.WindowsRuntime;
 using UnityEditor.Rendering;
 using UnityEngine;
@@ -9,13 +10,21 @@ public class GameManager : Singleton<GameManager> {
     [SerializeField] private GameObject registerPanel;  // 회원가입 패널
     [SerializeField] private GameObject rematchPanel;
 
+// 작성자 : 이동현
+#region 멀티 모드 생성 후, 서버로 데이터 저장
+    // TODO : 서버 연결 후, 플레이어 데이터를 서버에서 받아오도록 변경
     // 급수 저장 임시 변수
-    // 멀티 모드 생성 후, 서버로 데이터 저장
-    private int rateTier = 18;  // 최하급 티어
+    public int rateTier = 18;  // 최하급 티어
     private int tierEXP = 0;    // 경험치
     public int haveGold = 0;   // 소지금
+
+    // TODO : 서버 연결 후, 아이템 데이터 받아오도록 변경
     public bool isExpIncreaseActive = false; // 경험치 추가 증가 활성화 여부
     public bool isExpDecreaseActive = false; // 경험치 감소 활성화 여부
+
+    // TODO : 로컬 플레이어 정보 => 서버 연결 후, 로그인한 아이디로 변경하기
+    public Constants.PlayerType localPlayer = Constants.PlayerType.PlayerA;
+#endregion
 
     private Constants.GameType _gameType;
 
@@ -30,6 +39,9 @@ public class GameManager : Singleton<GameManager> {
 
     // Game 씬의 UI를 담당하는 객체
     private GameUIController _gameUIController;
+    
+    // 기보 시스템
+    private ReplayController _replayController;
 
 
     /// <summary>
@@ -128,6 +140,9 @@ public class GameManager : Singleton<GameManager> {
             if (_gameLogic == null) {
                 _gameLogic = new GameLogic(blockContoroller, _gameType);
             }
+            
+            
+            _replayController = FindFirstObjectByType<ReplayController>();
         }
     }
 
@@ -172,4 +187,23 @@ public class GameManager : Singleton<GameManager> {
         _gameType = this._gameType;
     }
 
+    public void GetTurnData()
+    {
+        var turnData = _gameLogic.GetTurnHistory();
+        _replayController.GetReplayData(turnData);
+    }
+
+    // 턴 UI를 업데이트하는 함수
+    public void UpdateTurnUI(int currentTurn, int totalTurn)
+    {
+        if (_replayController != null)
+            _replayController.UpdateUI(currentTurn, totalTurn);
+    }
+
+    // 플레이 중 버튼을 숨기는 함수
+    public void SetupReplayButtons(bool isON)
+    {
+        if (_replayController != null)
+            _replayController.SetupButtons(isON);
+    }
 }

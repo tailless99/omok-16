@@ -32,4 +32,18 @@ public class BlockController : MonoBehaviour
     public void SetBlockColor() {
         // TODO : 게임 로직이 완성되면 구현
     }
+    
+    // 4. 모든 마커 초기화
+    public void ClearMarkers()
+    {
+        for (int i = 0; i < blocks.Length; i++)
+            blocks[i].Setmarker(Block.MarkerType.None);
+    }
+    
+    // 5. 특정 마커 초기화
+    public void RemoveMarker(int row, int col)
+    {
+        var blockIndex = row * Constants.BlockColumnCount + col;
+        blocks[blockIndex].Setmarker(Block.MarkerType.None);
+    }
 }

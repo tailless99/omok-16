@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using UnityEngine;
 /// <summary>
 /// 렌주룰 구현
@@ -152,13 +152,12 @@ namespace Gomoku
                 // 1. 열린 연속된 3, 2. 중간이 비어있는 열린 3
                 if (tempLine.Contains("_XXX_") || tempLine.Contains("_X_XX_") || tempLine.Contains("_XX_X_"))
                 {
-                    if (tempLine.Contains("_X_XXX_") || tempLine.Contains("_XXX_X_") ||
-                        tempLine.Contains("W_XXX_") || tempLine.Contains("_XXX_W"))
+                    if (tempLine.Contains("_X_XXX_") || tempLine.Contains("_XXX_X_") || 
+                        tempLine.Contains("_X_XXXW") || tempLine.Contains("WXXX_X_") ||
+                        tempLine.Contains("W_XXX_") || tempLine.Contains("_XXX_W") ||
+                        tempLine.Contains("O_XXX_O"))
                         continue;
-                    
                     openThreeCount++;
-                    
-                    Debug.Log($"openThreeCount : {openThreeCount}");
                 }
 
                 // 열린 4 검사 (B가 놓아져서 완성되는 경우)
@@ -175,7 +174,6 @@ namespace Gomoku
                    )
                 {
                     openFourCount++;
-                    Debug.Log($"openFourCount : {openFourCount}");
                 }
 
                 if (tempLine.Contains("XXXXXX_") || tempLine.Contains("XX_XX_XX"))

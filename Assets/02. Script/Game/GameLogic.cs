@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using Gomoku;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -17,6 +18,10 @@ public class GameLogic
     private Constants.GameType _gameType;
     private Constants.GameType GameType => _gameType;
 
+    private int currentTurnCount;
+
+    private List<TurnState> turnHistory = new List<TurnState>();
+
 
     public enum GameResult { None, PlayerAWin, PlayerBWin, Draw }
 
@@ -34,6 +39,10 @@ public class GameLogic
     
     private void StartGame()
     {
+        turnHistory = new List<TurnState>();
+        currentTurnCount = 0;
+        GameManager.Instance.UpdateTurnUI(currentTurnCount, currentTurnCount);
+        GameManager.Instance.SetupReplayButtons(false);
         BoardReset();
         switch (_gameType)
         {
@@ -46,7 +55,6 @@ public class GameLogic
                 firstPlayerState = new PlayerState(true);
                 GameManager.Instance.SetPlayerRateTierPanel(GameUIController.GameTurnPanelType.ATurn, firstPlayerState.rateTier, firstPlayerState.currentEXP);
                 secondPlayerState = new PlayerState(false);
-                GameManager.Instance.SetPlayerRateTierPanel(GameUIController.GameTurnPanelType.ATurn, secondPlayerState.rateTier, secondPlayerState.currentEXP);
                 break;
             case Constants.GameType.MultiPlay:
                 break;
@@ -92,12 +100,18 @@ public class GameLogic
             {
                 _board[row, col] = playerType;
                 BlockController.PlaceMarker(Block.MarkerType.blackMarker, row, col);
+                currentTurnCount++;
+                SaveCurrentTurn(row, col, 1);
+                GameManager.Instance.UpdateTurnUI(currentTurnCount, currentTurnCount);
                 return true;
             }
         }
         else if(playerType == Constants.PlayerType.PlayerB) {
             _board[row, col] = playerType;
             BlockController.PlaceMarker(Block.MarkerType.whiteMarker, row, col);
+            currentTurnCount++;
+            SaveCurrentTurn(row, col, 2);
+            GameManager.Instance.UpdateTurnUI(currentTurnCount, currentTurnCount);
             return true;
         }
 
@@ -194,7 +208,17 @@ public class GameLogic
     }
     
     // Game Over 처리
-    public void EndGame(GameResult gameResult) {
+    public void EndGame(GameResult gameResult)
+    {
+        // 게임타입에 따라 나오는 텍스트가 다르게
+        string text = "";
+        if (_gameType == Constants.GameType.SinglePlay && gameResult == GameResult.PlayerBWin)
+            text = "재도전 하시겠습니까?";
+        else
+            text = "다시시작 하시겠습니까?"; // 확인
+        
+        GameManager.Instance.GetTurnData();
+        GameManager.Instance.SetupReplayButtons(true);
         SetState(null);
         firstPlayerState = null;
         secondPlayerState = null;
@@ -207,7 +231,7 @@ public class GameLogic
 
         // 유저에게 Game Over 표시
         GameManager.Instance.OpenConfirmPanel("게임 오버", () => {
-            GameManager.Instance.OpenRematchPanel("재도전 하시겠습니까?", () =>
+            GameManager.Instance.OpenRematchPanel(text, () =>
             {
                 StartGame();
             });
@@ -231,5 +255,18 @@ public class GameLogic
 
         // 다 아니라면, 아직 승부중이므로 None 상태 반환
         return GameResult.None;
+    }
+    
+    // 기보 시스템
+    private void SaveCurrentTurn(int row, int col, int player)
+    {
+        var gameBoard = GetIntBoard();
+        TurnState turnState = new TurnState(gameBoard, currentTurnCount, player, row, col);
+        turnHistory.Add(turnState);
+    }
+
+    public List<TurnState> GetTurnHistory()
+    {
+        return turnHistory;
     }
 }

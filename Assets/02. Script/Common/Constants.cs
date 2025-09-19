@@ -1,10 +1,15 @@
 public static class Constants {
     public enum GameType { SinglePlay, DualPlay, MultiPlay }
     public enum PlayerType { None, PlayerA, PlayerB }
+    public enum RankChangeType { None, RankUp, RankDown }
 
     public const int BlockColumnCount = 15;
 
     public const int GameWinCount = 5;
+
+    // 티어 관련 상수
+    public const int minTier = 1;
+    public const int maxTier = 18;
 
     // 티어별 요구 경험치
     public const int minTierExp = 3;       // 하위 티어 요구 경험치
