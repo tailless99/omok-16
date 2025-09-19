@@ -9,6 +9,7 @@ public class Block : MonoBehaviour
     [SerializeField] private Sprite blackMarkerSprite;
     [SerializeField] private Sprite whiteMarkerSprite;
     [SerializeField] private Sprite forbiddenMarkerSprite;
+    [SerializeField] private Sprite recommendSprite;
     [SerializeField] private TextMeshProUGUI turnNumberText;
     [SerializeField] private Image markerSpriteRenderer;
 
@@ -22,7 +23,8 @@ public class Block : MonoBehaviour
         None,
         blackMarker,
         whiteMarker,
-        forbiddenMarker
+        forbiddenMarker,
+        recommendMarker
     }
 
     // Block Index
@@ -64,6 +66,10 @@ public class Block : MonoBehaviour
                 break;
             case MarkerType.forbiddenMarker:
                 markerSpriteRenderer.sprite = forbiddenMarkerSprite;
+                markerSpriteRenderer.color = new Color(1, 1, 1, 1);
+                break;
+            case MarkerType.recommendMarker:
+                markerSpriteRenderer.sprite = recommendSprite;
                 markerSpriteRenderer.color = new Color(1, 1, 1, 1);
                 break;
         }

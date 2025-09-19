@@ -51,4 +51,12 @@ public class BlockController : MonoBehaviour
         blocks[blockIndex].Setmarker(Block.MarkerType.None);
         blocks[blockIndex].SetTurnNumber(0);
     }
+
+    // 자리 추천 마커 생성
+    public void ShowRecommend(int row, int col)
+    {
+        int index = row * Constants.BlockColumnCount + col;
+        blocks[index].Setmarker(Block.MarkerType.recommendMarker);
+    }
+
 }

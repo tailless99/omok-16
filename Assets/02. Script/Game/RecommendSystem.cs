@@ -3,28 +3,73 @@ using UnityEngine;
 
 public class RecommendSystem : MonoBehaviour
 {
+    public BlockController blockController;
+    // 추천 위치 저장용 변수
+    private int? recommendedRow = null;
+    private int? recommendedCol = null;
+
+    /// <summary>
+    /// 추천 버튼 클릭 시 호출
+    /// </summary>
     public void OnClickButton()
     {
         _ = OnClickRecommendButton();
     }
+
+    /// <summary>
+    /// AI 추천 위치 계산 및 표시
+    /// </summary>
     public async Task OnClickRecommendButton()
     {
         GameManager.Instance.SetGameTurnPanel(GameUIController.GameTurnPanelType.ATurn);
-        // AI 처리
+
         var gameLogic = GameManager.Instance.GetGameLogic();
-        var board = gameLogic.GetBoard();
-        if (gameLogic == null) Debug.LogError("gameLogic is not set!");
-        // GetBestMove 연산을 백그라운드 스레드에서 실행, await 때문에 GetBestMove 함수가 완료 될 때까지 대기
-        (int row, int col)? result = await OmokAI.GetBestMove(board, 15);
+        var basePlayerState = gameLogic._currentPlayerState;
 
-
-        if (result.HasValue)
+        if (basePlayerState == gameLogic.firstPlayerState)
         {
-            Debug.Log($"AI 수: row={result.Value.row}, col={result.Value.col}");
+            var board = gameLogic.GetBoard();
+            if (gameLogic == null)
+            {
+                Debug.LogError("gameLogic is not set!");
+                return;
+            }
+
+            // 비동기적으로 추천 위치 계산
+            (int row, int col)? result = await OmokAI.GetBestMove(board, 15);
+
+            if (result.HasValue)
+            {
+                recommendedRow = result.Value.row;
+                recommendedCol = result.Value.col;
+                gameLogic.GetCheckForbiddenMarkersBoard(out int forbiddenRow, out int forbiddenCol);
+                if (recommendedRow == forbiddenRow && recommendedCol == forbiddenCol)
+                {
+                    Debug.Log("추천 자리는 금수 자리입니다.");
+                    gameLogic.SetCheckForbiddenMarkersBoard(0,0);
+                }
+                else
+                {
+                    blockController.ShowRecommend(recommendedRow.Value, recommendedCol.Value);
+                }
+            }
+            else
+            {
+                gameLogic.EndGame(GameLogic.GameResult.Draw);
+            }
         }
-        else
+    }
+
+    /// <summary>
+    /// 이전 추천 마커 제거
+    /// </summary>
+    public void ClearRecommendMarker()
+    {
+        if (recommendedRow.HasValue && recommendedCol.HasValue)
         {
-            gameLogic.EndGame(GameLogic.GameResult.Draw);
+            blockController.RemoveMarker(recommendedRow.Value, recommendedCol.Value);
+            recommendedRow = null;
+            recommendedCol = null;
         }
     }
 }

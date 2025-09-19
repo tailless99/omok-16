@@ -22,6 +22,8 @@ public class GameLogic
 
     private List<TurnState> turnHistory = new List<TurnState>();
 
+    private int forbiddenMarkersBoardRow;
+    private int forbiddenMarkersBoardCol;
 
     public enum GameResult { None, PlayerAWin, PlayerBWin, Draw }
 
@@ -82,7 +84,6 @@ public class GameLogic
     public void SetState(BasePlayerState state) {
         _currentPlayerState?.OnExit(this);
         _currentPlayerState = state;
-
         // 흑돌 턴일 때 금지마크 표시
         UpdateForbiddenMarkersForCurrentPlayer();
         
@@ -100,6 +101,7 @@ public class GameLogic
             {
                 _board[row, col] = playerType;
                 currentTurnCount++;
+                GameObject.FindAnyObjectByType<RecommendSystem>()?.ClearRecommendMarker();
                 BlockController.PlaceMarker(Block.MarkerType.blackMarker, row, col, 0);
                 SaveCurrentTurn(row, col, 1);
                 GameManager.Instance.UpdateTurnUI(currentTurnCount, currentTurnCount);
@@ -164,6 +166,8 @@ public class GameLogic
                 {
                     // BlockController를 통해 'forbiddenMarker'를 실제로 화면에 표시
                     BlockController.PlaceMarker(Block.MarkerType.forbiddenMarker, r, c, 0);
+                    forbiddenMarkersBoardRow = r;
+                    forbiddenMarkersBoardCol = c;
                 }
             }
         }
@@ -272,5 +276,17 @@ public class GameLogic
     {
         GameManager.Instance.GetTurnData();
         GameManager.Instance.SetupReplayButtons(true);
+    }
+
+    public void GetCheckForbiddenMarkersBoard(out int row, out int col)
+    {
+        row = forbiddenMarkersBoardRow;
+        col = forbiddenMarkersBoardCol;
+    }
+    
+    public void SetCheckForbiddenMarkersBoard(int row, int col)
+    {
+        this.forbiddenMarkersBoardRow = row;
+        this.forbiddenMarkersBoardCol = col;
     }
 }
