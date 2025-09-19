@@ -2,10 +2,15 @@ using UnityEngine;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks; // Task 사용을 위해 추가
+using System.Threading;
 
 public static class OmokAI
 {
     private static int searchPadding = 1; // 주변 몇 칸까지 탐색할지 설정
+    private static int currOperation;
+    private const int weightOperation = 8000;
+    private static int maxOperation;
+    
     
     /// <summary>
     /// 작성자 : 김동건
@@ -62,9 +67,13 @@ public static class OmokAI
     /// </summary>
     /// <param name="board"></param>
     /// <returns></returns>
-    public static async Task<(int row, int col)?> GetBestMove(Constants.PlayerType[,] board)
+    public static async Task<(int row, int col)?> GetBestMove(Constants.PlayerType[,] board , int difficulty)
     {
         float bestScore = float.MinValue;
+        
+        currOperation = 0;
+        maxOperation = difficulty * weightOperation;
+        
         (int row, int col) movePosition = (-1, -1);
         
         // 최적의 수일 가능성이 높은 후보 리스트
@@ -144,8 +153,15 @@ public static class OmokAI
     /// <returns></returns>
     private static float DoMiniMax(Constants.PlayerType[,] board, int depth, bool isMaximizing, float alpha, float beta, int lastPlacedRow, int lastPlacedCol)
     {
+        int currentCallCount = Interlocked.Increment(ref currOperation);
+        
         // 게임 종료 상태 체크 (isMaximizing 값에 따라 차례 변경)
         Constants.PlayerType lastPlayer = isMaximizing ? Constants.PlayerType.PlayerA : Constants.PlayerType.PlayerB; // 방금 돌을 놓은 플레이어
+
+        if (currentCallCount >= maxOperation)
+        {
+            return EvaluateBoard(board, Constants.PlayerType.PlayerB) - EvaluateBoard(board, Constants.PlayerType.PlayerA);
+        }
         
         if (CheckGameWin(lastPlayer, board, lastPlacedRow, lastPlacedCol)) // 오목이 만들어 지는 경우 차례에 따른 점수 설정
         {
