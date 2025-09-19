@@ -221,4 +221,10 @@ public class GameManager : Singleton<GameManager> {
     {
         _gameLogic.IntoReplayMode();
     }
+
+    public GameLogic GetGameLogic()
+    {
+        return _gameLogic;
+    }
+
 }
