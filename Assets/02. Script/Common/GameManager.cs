@@ -28,8 +28,10 @@ public class GameManager : Singleton<GameManager> {
 
     private Constants.GameType _gameType;
 
-    private int winningStreak = 0; //연승 저장 변수
-    private int bestCount = 0; // 최대 연승 저장
+    private int singlePlayWinningStreak = 0; //연승 저장 변수
+    private int singlePlayBestCount = 0; // 최대 연승 저장
+    private int dualPlayWinningStreak = 0; //연승 저장 변수
+    private int dualPlayBestCount = 0; // 최대 연승 저장
 
     // Panel을 띄우기 위한 Canvas 할당
     private Canvas _canvas;
@@ -156,12 +158,16 @@ public class GameManager : Singleton<GameManager> {
     /// <summary>
     /// 연승횟수, 최다연승 횟수 가져오는 함수
     /// </summary>
-    /// <param name="winningStreak"></param>
-    /// <param name="bestCount"></param>
-   public void GetWinningStreak(out int winningStreak, out int bestCount)
+    /// <param name="singlePlayWinningStreak"></param>
+    /// <param name="singlePlayBestCount"></param>
+    /// <param name="dualPlayWinningStreak"></param>
+    /// <param name="dualPlayBestCount"></param>
+    public void GetWinningStreak(out int singlePlayWinningStreak, out int singlePlayBestCount, out int dualPlayWinningStreak, out int dualPlayBestCount)
     {
-        winningStreak = this.winningStreak;
-        bestCount = this.bestCount;
+        singlePlayWinningStreak = this.singlePlayWinningStreak;
+        singlePlayBestCount = this.singlePlayBestCount;
+        dualPlayWinningStreak = this.dualPlayWinningStreak;
+        dualPlayBestCount = this.dualPlayBestCount;
     }
 
 
@@ -169,12 +175,16 @@ public class GameManager : Singleton<GameManager> {
     /// <summary>
     /// 연승횟수, 최다연승 정보 저장 함수
     /// </summary>
-    /// <param name="winningStreak"></param>
-    /// <param name="bestCount"></param>
-    public void SetWinningStreak(int winningStreak, int bestCount)
+    /// <param name="singlePlayWinningStreak"></param>
+    /// <param name="singlePlayBestCount"></param>
+    /// <param name="dualPlayWinningStreak"></param>
+    /// <param name="dualPlayBestCount"></param>
+    public void SetWinningStreak(int singlePlayWinningStreak, int singlePlayBestCount, int dualPlayWinningStreak, int dualPlayBestCount)
     {
-        this.winningStreak = winningStreak;
-        this.bestCount = bestCount;
+        this.singlePlayWinningStreak = singlePlayWinningStreak;
+        this.singlePlayBestCount = singlePlayBestCount;
+        this.dualPlayWinningStreak = dualPlayWinningStreak;
+        this.dualPlayBestCount = dualPlayBestCount;
     }
 
     //작성자: 이명호
