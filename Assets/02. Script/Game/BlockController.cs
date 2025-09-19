@@ -21,11 +21,12 @@ public class BlockController : MonoBehaviour
     }
 
     // 2. 특정 Block에 마커 표시
-    public void PlaceMarker(Block.MarkerType markerType, int row, int col) {
+    public void PlaceMarker(Block.MarkerType markerType, int row, int col, int turnNumber) {
         // row, col >> index 변환
         var blockIndex = row * Constants.BlockColumnCount + col;
         
         blocks[blockIndex].Setmarker(markerType);
+        blocks[blockIndex].SetTurnNumber(turnNumber);
     }
 
     // 3. 특정 Block의 배경색을 설정
@@ -37,7 +38,10 @@ public class BlockController : MonoBehaviour
     public void ClearMarkers()
     {
         for (int i = 0; i < blocks.Length; i++)
+        {
             blocks[i].Setmarker(Block.MarkerType.None);
+            blocks[i].SetTurnNumber(0);
+        }
     }
     
     // 5. 특정 마커 초기화
@@ -45,5 +49,6 @@ public class BlockController : MonoBehaviour
     {
         var blockIndex = row * Constants.BlockColumnCount + col;
         blocks[blockIndex].Setmarker(Block.MarkerType.None);
+        blocks[blockIndex].SetTurnNumber(0);
     }
 }
