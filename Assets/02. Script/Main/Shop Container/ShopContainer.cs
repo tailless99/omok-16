@@ -34,7 +34,7 @@ public class ShopContainer : MonoBehaviour
 
     // 버튼을 호버했을 때 실행되는 콜백 메서드
     void SetCostPanelText(int cost) {
-        if(cost == 0) {
+        if (cost == 0) {
             costText.text = "";
             return;
         }
@@ -44,5 +44,7 @@ public class ShopContainer : MonoBehaviour
     // 아이템 구매했을 때 실행되는 콜백 메서드
     void SetHaveGoldPanelText() {
         haveGoldText.text = GameManager.Instance.haveGold.ToString();
+        //// UI 사운드 추가
+        //SoundManager.Instance.PlayUI(SoundType.UI_Set_Baduk);
     }
 }
