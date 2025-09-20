@@ -24,6 +24,7 @@ public class ConfirmPanelController : PanelController {
     /// 확인 버튼 클릭 시, 호출되는 메서드
     /// </summary>
     public void OnClickConfirmButton() {
+            SoundManager.Instance.PlayUI(SoundType.UI_Click);
         Hide(() => {
             _onConfirmButtonClicked?.Invoke();
         });
@@ -34,6 +35,7 @@ public class ConfirmPanelController : PanelController {
     /// X 버튼 클릭 시, 호출되는 메서드
     /// </summary>
     public void OnClickCloseButton() {
+        SoundManager.Instance.PlayUI(SoundType.UI_Click);
         Hide();
     }
 }

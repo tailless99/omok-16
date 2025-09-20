@@ -112,9 +112,6 @@ public abstract class BasePlayerState {
 
         // 로컬 플레이어의 경험치 업데이트
         localPlayer.currentEXP += expChange;
-        if(localPlayer.currentEXP < 0) {
-            localPlayer.currentEXP = 0; // 경험치는 0 미만으로 떨어지지 않음
-        }
 
         // 티어 랭크 업 판정
         var requireExp = localPlayer.rateTier >= 10 ?
@@ -123,7 +120,7 @@ public abstract class BasePlayerState {
 
         // 랭크업 조건
         rankType = Constants.RankChangeType.None; // 초기값 설정
-        Debug.Log($"current Exp : {localPlayer.currentEXP} || reauie : {requireExp}");
+        
         if (localPlayer.currentEXP >= requireExp) {
             // 최고 랭크일 때는 더 이상 랭크업하지 않음
             if (localPlayer.rateTier > Constants.minTier) {
@@ -145,11 +142,17 @@ public abstract class BasePlayerState {
                 Debug.Log("Lose");
             }
         }
+
+        // 경험치 예외처리
+        if (localPlayer.currentEXP < 0) {
+            localPlayer.currentEXP = 0; // 경험치는 0 미만으로 떨어지지 않음
+        }
         
+        GameManager.Instance.SetPlayerRateTierPanel(GameUIController.GameTurnPanelType.ATurn, rateTier, currentEXP);
+
         // 최종적으로 로컬 플레이어의 티어 및 경험치, 골드 정보 업데이트
         rateTier = localPlayer.rateTier;
         currentEXP = localPlayer.currentEXP;
         GameManager.Instance.SetTierInfo(localPlayer.rateTier, localPlayer.currentEXP, gieGold);
-        GameManager.Instance.SetPlayerRateTierPanel(GameUIController.GameTurnPanelType.ATurn, rateTier, currentEXP);
     }
 }

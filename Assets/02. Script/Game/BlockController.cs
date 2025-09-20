@@ -12,6 +12,8 @@ public class BlockController : MonoBehaviour
     public void InitBlocks() {
         for (int i = 0; i < blocks.Length; i++)
             blocks[i].InitMarker(i, (blockIndex) => {
+                // UI 사운드 추가
+                SoundManager.Instance.PlayUI(SoundType.UI_Set_Baduk);
                 // 특정 Block이 클릭 된 상태에 대한 처리
                 var row = blockIndex / Constants.BlockColumnCount;
                 var col = blockIndex % Constants.BlockColumnCount;

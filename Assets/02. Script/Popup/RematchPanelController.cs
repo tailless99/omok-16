@@ -24,6 +24,7 @@ public class RematchPanelController : PanelController {
     /// 확인 버튼 클릭 시, 호출되는 메서드
     /// </summary>
     public void OnClickRematchButton() {
+            SoundManager.Instance.PlayUI(SoundType.UI_Click);
         Hide(() => {
             _onRematchButtonClicked?.Invoke();
         });
@@ -38,6 +39,7 @@ public class RematchPanelController : PanelController {
     /// X 버튼 클릭 시, 호출되는 메서드
     /// </summary>
     public void OnClickReplayButton() {
+        SoundManager.Instance.PlayUI(SoundType.UI_Click);
         Hide();
         GameManager.Instance.OnReplayMode();
     }
