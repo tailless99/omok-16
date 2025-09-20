@@ -24,8 +24,6 @@ public class RecommendSystem : MonoBehaviour
     /// </summary>
     public async Task OnClickRecommendButton()
     {
-        recommendText.text = string.Empty;
-        lodingPanel.SetActive(true);
         GameManager.Instance.SetGameTurnPanel(GameUIController.GameTurnPanelType.ATurn);
 
         var gameLogic = GameManager.Instance.GetGameLogic();
@@ -33,6 +31,8 @@ public class RecommendSystem : MonoBehaviour
 
         if (basePlayerState == gameLogic.firstPlayerState)
         {
+            recommendText.text = string.Empty;
+            lodingPanel.SetActive(true);
             var board = gameLogic.GetBoard();
             if (gameLogic == null)
             {
@@ -47,25 +47,29 @@ public class RecommendSystem : MonoBehaviour
             {
                 recommendedRow = result.Value.row;
                 recommendedCol = result.Value.col;
-                gameLogic.GetCheckForbiddenMarkersBoard(out int forbiddenRow, out int forbiddenCol);
+                gameLogic.GetCheckForbiddenMarkersBoard(out int forbiddenRow, out int forbiddenCol); //AI가 금수 자리를 추천할 경우
                 if (recommendedRow == forbiddenRow && recommendedCol == forbiddenCol)
                 {
                     Debug.Log("추천 자리는 금수 자리입니다.");
-                    gameLogic.SetCheckForbiddenMarkersBoard(0,0);
+                    lodingPanel.SetActive(false);
+                    recommendText.text = "금수 자리";
                 }
                 else
                 {
+                    lodingPanel.SetActive(false);
+                    recommendText.text = "자리 추천";
                     blockController.ShowRecommend(recommendedRow.Value, recommendedCol.Value);
                 }
             }
             else
             {
+                lodingPanel.SetActive(false);
+                recommendText.text = "자리 추천";
                 gameLogic.EndGame(GameLogic.GameResult.Draw);
             }
+            
+             gameLogic.SetCheckForbiddenMarkersBoard(0,0);
         }
-
-        lodingPanel.SetActive(false);
-        recommendText.text = "자리 추천";
     }
 
     /// <summary>
