@@ -1,4 +1,5 @@
 using System.Threading.Tasks;
+using TMPro;
 using UnityEngine;
 
 public class RecommendSystem : MonoBehaviour
@@ -7,13 +8,15 @@ public class RecommendSystem : MonoBehaviour
     // 추천 위치 저장용 변수
     private int? recommendedRow = null;
     private int? recommendedCol = null;
-
+    [SerializeField] private GameObject lodingPanel;
+    [SerializeField]  private TextMeshProUGUI recommendText;
     /// <summary>
     /// 추천 버튼 클릭 시 호출
     /// </summary>
     public void OnClickButton()
     {
         _ = OnClickRecommendButton();
+
     }
 
     /// <summary>
@@ -21,6 +24,8 @@ public class RecommendSystem : MonoBehaviour
     /// </summary>
     public async Task OnClickRecommendButton()
     {
+        recommendText.text = string.Empty;
+        lodingPanel.SetActive(true);
         GameManager.Instance.SetGameTurnPanel(GameUIController.GameTurnPanelType.ATurn);
 
         var gameLogic = GameManager.Instance.GetGameLogic();
@@ -58,6 +63,9 @@ public class RecommendSystem : MonoBehaviour
                 gameLogic.EndGame(GameLogic.GameResult.Draw);
             }
         }
+
+        lodingPanel.SetActive(false);
+        recommendText.text = "자리 추천";
     }
 
     /// <summary>
