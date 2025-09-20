@@ -166,6 +166,8 @@ public class GameLogic
                 {
                     // BlockController를 통해 'forbiddenMarker'를 실제로 화면에 표시
                     BlockController.PlaceMarker(Block.MarkerType.forbiddenMarker, r, c, 0);
+
+                    //추천 시스템을 위한 금수 위치 따로 저장
                     forbiddenMarkersBoardRow = r;
                     forbiddenMarkersBoardCol = c;
                 }
@@ -278,12 +280,14 @@ public class GameLogic
         GameManager.Instance.SetupReplayButtons(true);
     }
 
+    //금수 위치 좌표 가져오는 함수
     public void GetCheckForbiddenMarkersBoard(out int row, out int col)
     {
         row = forbiddenMarkersBoardRow;
         col = forbiddenMarkersBoardCol;
     }
     
+    //금수 위치 저장하는 함수
     public void SetCheckForbiddenMarkersBoard(int row, int col)
     {
         this.forbiddenMarkersBoardRow = row;

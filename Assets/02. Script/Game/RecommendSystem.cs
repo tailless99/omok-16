@@ -2,6 +2,8 @@ using System.Threading.Tasks;
 using TMPro;
 using UnityEngine;
 
+//작성자: 이명호
+//용도: 자리 추천 시스템
 public class RecommendSystem : MonoBehaviour
 {
     public BlockController blockController;
@@ -19,6 +21,7 @@ public class RecommendSystem : MonoBehaviour
 
     }
 
+
     /// <summary>
     /// AI 추천 위치 계산 및 표시
     /// </summary>
@@ -29,7 +32,7 @@ public class RecommendSystem : MonoBehaviour
         var gameLogic = GameManager.Instance.GetGameLogic();
         var basePlayerState = gameLogic._currentPlayerState;
 
-        if (basePlayerState == gameLogic.firstPlayerState)
+        if (basePlayerState == gameLogic.firstPlayerState) // A플레이어일때
         {
             recommendText.text = string.Empty;
             lodingPanel.SetActive(true);
@@ -43,7 +46,7 @@ public class RecommendSystem : MonoBehaviour
             // 비동기적으로 추천 위치 계산
             (int row, int col)? result = await OmokAI.GetBestMove(board, 15);
 
-            if (result.HasValue)
+            if (result.HasValue) //추천 자리가 있을 경우
             {
                 recommendedRow = result.Value.row;
                 recommendedCol = result.Value.col;

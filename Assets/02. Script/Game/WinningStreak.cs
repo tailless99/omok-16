@@ -22,7 +22,7 @@ public class WinningStreak : MonoBehaviour
 
     //작성자: 이명호
     /// <summary>
-    /// 싱글 플레이 연승, 최다 연승 계산 함수
+    /// 싱글, 듀얼 플레이 연승, 최다 연승 계산 함수
     /// </summary>
     /// <param name="result"></param>
     public void WinningCount(GameLogic.GameResult result)
@@ -63,11 +63,11 @@ public class WinningStreak : MonoBehaviour
     /// </summary>
     public void WinningText()
     {
-        if (_gameType == Constants.GameType.SinglePlay) //DualPlay -> SinglePlay 바꿔야함
+        if (_gameType == Constants.GameType.SinglePlay) 
         {
             winningStreakText.text = $"<color=#FFD700>연승:</color>{singlePlayWinningStreak}연승\n<color=#E30000>최고 연승:</color>{singlePlayBestCount}연승";
         }
-        else if (_gameType == Constants.GameType.DualPlay) //DualPlay -> SinglePlay 바꿔야함
+        else if (_gameType == Constants.GameType.DualPlay)
         {
             winningStreakText.text = $"<color=#FFD700>연승:</color>{dualPlayWinningStreak}연승\n<color=#E30000>최고 연승:</color>{dualPlayBestCount}연승";
         }
