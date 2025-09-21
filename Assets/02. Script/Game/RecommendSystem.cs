@@ -27,8 +27,6 @@ public class RecommendSystem : MonoBehaviour
     /// </summary>
     public async Task OnClickRecommendButton()
     {
-        GameManager.Instance.SetGameTurnPanel(GameUIController.GameTurnPanelType.ATurn);
-
         var gameLogic = GameManager.Instance.GetGameLogic();
         var basePlayerState = gameLogic._currentPlayerState;
 
