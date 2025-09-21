@@ -7,8 +7,7 @@ public class EnemyUI : MonoBehaviour
 
     private void Start() {
         GameManager.Instance.GetGameType(out Constants.GameType gameType);
-        var enemyName = gameType == Constants.GameType.SinglePlay ? "AI" :
-                        gameType == Constants.GameType.DualPlay ? "Dual" : "Player";
+        var enemyName = gameType == Constants.GameType.SinglePlay ? "AI" : "Player";
         enemyNameText.text = enemyName;
     }
 }

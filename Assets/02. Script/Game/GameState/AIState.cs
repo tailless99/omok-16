@@ -48,13 +48,13 @@ public class AIState : BasePlayerState {
         switch (tier/5)
         {
             case 3: // 급수 15 ~ 18
-                difficulty = 1;
+                difficulty = 3;
                 break;
             case 2: // 급수 10 ~ 14
                 difficulty = 5;
                 break;
             case 1: // 급수 9 ~ 5
-                difficulty = 15;
+                difficulty = 20;
                 break;
             case 0: // 급수 1 ~ 4
                 difficulty = 100;

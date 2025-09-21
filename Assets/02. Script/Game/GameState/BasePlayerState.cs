@@ -128,7 +128,6 @@ public abstract class BasePlayerState {
                 localPlayer.currentEXP -= requireExp;
                 
                 rankType = Constants.RankChangeType.RankUp; // 랭크 업 반환
-                Debug.Log("win");
             }
         }
         // 랭크다운 조건
@@ -139,7 +138,6 @@ public abstract class BasePlayerState {
                 localPlayer.currentEXP += requireExp;
 
                 rankType = Constants.RankChangeType.RankDown; // 랭크 다운 반환
-                Debug.Log("Lose");
             }
         }
 

@@ -216,6 +216,7 @@ public class GameLogic
     // Game Over 처리
     public void EndGame(GameResult gameResult)
     {
+        string endMessage;
         // 게임타입에 따라 나오는 텍스트가 다르게
         string text = "";
         if (_gameType == Constants.GameType.SinglePlay && gameResult == GameResult.PlayerBWin)
@@ -232,9 +233,35 @@ public class GameLogic
         {
             streak.WinningCount(gameResult);
         }
-
+        
+        // 게임 종료시 
+        switch (gameResult)
+        {
+            case GameResult.None:
+                endMessage = "Err!!";
+                break;
+            case GameResult.PlayerAWin:
+                endMessage = "Player A Win!";
+                break;
+            case GameResult.PlayerBWin:
+                if (_gameType ==  Constants.GameType.SinglePlay)
+                {
+                    endMessage = "AI Win!";
+                }
+                else
+                {
+                    endMessage = "Player B Win!";
+                }
+                break;
+            case GameResult.Draw:
+                endMessage = "Players Draw!";
+                break;
+            default:
+                throw new ArgumentOutOfRangeException(nameof(gameResult), gameResult, null);
+        }
+        
         // 유저에게 Game Over 표시
-        GameManager.Instance.OpenConfirmPanel("게임 오버", () => {
+        GameManager.Instance.OpenConfirmPanel(endMessage, () => {
             GameManager.Instance.OpenRematchPanel(text, () =>
             {
                 StartGame();
