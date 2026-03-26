@@ -1,4 +1,4 @@
-# :computer: Concave
+# :computer: Omok
 
 Unity를 이용한 오목 게임 개발
 
